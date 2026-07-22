@@ -1,170 +1,67 @@
 "use client";
-import { motion } from "framer-motion";
 import { personalInfo } from "@/lib/portfolio-data";
-import { Download, Printer, ExternalLink, FileText, Eye } from "lucide-react";
+import { FiDownload, FiPrinter, FiExternalLink } from "react-icons/fi";
+import MagneticButton from "@/components/ui/MagneticButton";
+import Tilt3DCard from "@/components/ui/Tilt3DCard";
 
 export default function Resume() {
-  const handlePrint = () => window.print();
-
   return (
-    <section id="resume" className="py-24 relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/5 to-transparent pointer-events-none" />
-
-      <div className="section-container">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <span className="section-tag">
-            <span className="w-2 h-2 rounded-full bg-purple-400" />
-            My Resume
-          </span>
-          <h2 className="font-display font-bold text-4xl lg:text-5xl mt-4 mb-4">
-            Full{" "}
-            <span className="gradient-text">Credentials</span>
-          </h2>
-          <p className="text-slate-400 max-w-xl mx-auto">
-            A comprehensive overview of my experience, skills, and achievements.
-          </p>
-        </motion.div>
-
-        {/* Action buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-3 mb-10"
-        >
-          <motion.a
-            href={personalInfo.resumeUrl}
-            download
-            whileHover={{ scale: 1.04, y: -2 }}
-            whileTap={{ scale: 0.96 }}
-            className="btn-primary flex items-center gap-2"
-          >
-            <Download size={16} />
-            Download PDF
-          </motion.a>
-
-          <motion.button
-            onClick={handlePrint}
-            whileHover={{ scale: 1.04, y: -2 }}
-            whileTap={{ scale: 0.96 }}
-            className="btn-secondary flex items-center gap-2"
-          >
-            <Printer size={16} />
-            Print Resume
-          </motion.button>
-
-          <motion.a
-            href={personalInfo.resumeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.04, y: -2 }}
-            whileTap={{ scale: 0.96 }}
-            className="btn-outline flex items-center gap-2"
-          >
-            <ExternalLink size={16} />
-            Open in Tab
-          </motion.a>
-        </motion.div>
-
-        {/* Resume preview frame */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="max-w-3xl mx-auto"
-        >
-          <div className="glass border border-white/[0.08] rounded-3xl overflow-hidden relative">
-            {/* Preview header bar */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.06] bg-white/[0.02]">
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-500/50" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-                <div className="w-3 h-3 rounded-full bg-green-500/50" />
-              </div>
-              <div className="flex items-center gap-2 text-slate-400 text-xs font-mono">
-                <FileText size={12} />
-                resume — Ankit Yadav.pdf
-              </div>
-              <div className="flex items-center gap-1 text-slate-500 text-xs">
-                <Eye size={12} />
-                Preview
-              </div>
-            </div>
-
-            {/* Mock resume content */}
-            <div className="p-8 bg-gradient-to-b from-white/[0.02] to-transparent">
-              {/* Resume header */}
-              <div className="text-center border-b border-white/[0.06] pb-6 mb-6">
-                <div className="font-display font-bold text-2xl text-white mb-1">Ankit Yadav</div>
-                <div className="text-indigo-400 text-sm font-semibold mb-2">MERN Stack Developer</div>
-                <div className="flex flex-wrap justify-center gap-4 text-slate-400 text-xs font-mono">
-                  <span>ankit.yadav24899@gmail.com</span>
-                  <span>7999174410</span>
-                  <span>Indore, MP</span>
-                </div>
-              </div>
-
-              {/* Mock sections */}
-              {[
-                { label: "Professional Summary", lines: [85, 90, 70] },
-                { label: "Technical Skills", lines: [60, 75, 80, 55, 70] },
-                { label: "Work Experience", lines: [95, 75, 85, 65] },
-                { label: "Projects", lines: [90, 80, 70, 60] },
-                { label: "Education", lines: [75, 60] },
-              ].map((section, si) => (
-                <motion.div
-                  key={section.label}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: si * 0.1 }}
-                  className="mb-6"
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="h-px flex-1 bg-white/[0.06]" />
-                    <span className="text-slate-300 text-xs font-bold font-display uppercase tracking-wider px-2">
-                      {section.label}
-                    </span>
-                    <div className="h-px flex-1 bg-white/[0.06]" />
-                  </div>
-                  <div className="space-y-2 pl-2">
-                    {section.lines.map((w, li) => (
-                      <div
-                        key={li}
-                        className="h-2 rounded-full bg-white/[0.05]"
-                        style={{ width: `${w}%` }}
-                      />
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-
-              {/* Overlay CTA */}
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-[#050510] via-[#050510]/60 to-transparent rounded-b-3xl">
-                <motion.a
-                  href={personalInfo.resumeUrl}
-                  download
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn-primary flex items-center gap-2 shadow-2xl shadow-indigo-500/40"
-                >
-                  <Download size={18} />
-                  Download Full Resume
-                </motion.a>
-              </div>
+    <section id="resume" style={{ background: "var(--bg2)", color: "var(--ink)", padding: "6rem 0" }}>
+      <div className="wrap">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
+          {/* Left */}
+          <div className="reveal-left">
+            <div className="section-label">My Resume</div>
+            <h2 className="font-display" style={{ fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 800, color: "var(--ink)", lineHeight: 1.15, marginBottom: "1.5rem" }}>
+              Full <span className="gradient-text">Credentials</span>
+            </h2>
+            <p style={{ color: "var(--ink2)", lineHeight: 1.8, marginBottom: "2.5rem", maxWidth: "28rem", fontSize: ".95rem" }}>
+              A comprehensive overview of my work experience, technical skills, production projects, and educational background — available for immediate download.
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: ".85rem" }}>
+              <MagneticButton><a className="btn btn-primary" href={personalInfo.resumeUrl} download><FiDownload size={16} /> Download PDF</a></MagneticButton>
+              <MagneticButton><button className="btn btn-ghost" onClick={() => window.print()}><FiPrinter size={16} /> Print</button></MagneticButton>
+              <MagneticButton><a className="btn btn-ghost" href={personalInfo.resumeUrl} target="_blank" rel="noopener noreferrer"><FiExternalLink size={16} /> Open</a></MagneticButton>
             </div>
           </div>
-        </motion.div>
+
+          {/* Right — preview */}
+          <div className="reveal-right">
+            <Tilt3DCard maxTilt={8} scale={1.02}>
+              <div style={{ background: "var(--card-bg)", borderRadius: "1.25rem", overflow: "hidden", border: "1.5px solid var(--border)" }}>
+                <div style={{ padding: ".65rem 1rem", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", gap: ".5rem", background: "var(--bg)" }}>
+                  {["#ef4444", "#f59e0b", "#22c55e"].map((c, i) => <div key={i} style={{ width: 9, height: 9, borderRadius: "50%", background: c, opacity: .7 }} />)}
+                  <span style={{ marginLeft: ".5rem", fontSize: ".68rem", color: "var(--ink3)", fontFamily: "monospace" }}>Ankit_Yadav_Resume.pdf</span>
+                </div>
+                <div style={{ padding: "1.75rem", position: "relative" }}>
+                  <div style={{ textAlign: "center", paddingBottom: "1.25rem", borderBottom: "1.5px solid var(--border)", marginBottom: "1.25rem" }}>
+                    <div className="font-display" style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--ink)" }}>Ankit Yadav</div>
+                    <div style={{ color: "var(--accent)", fontSize: ".78rem", fontWeight: 700, marginBottom: ".4rem" }}>MERN Stack Developer</div>
+                    <div style={{ fontSize: ".68rem", color: "var(--ink3)", fontFamily: "monospace" }}>ankit.yadav24899@gmail.com · Indore, MP</div>
+                  </div>
+                  {[{ l: "Professional Summary", w: [88, 92, 75] }, { l: "Technical Skills", w: [60, 78, 82, 55, 70] }, { l: "Work Experience", w: [95, 75, 85, 60] }, { l: "Projects", w: [90, 80, 70] }, { l: "Education", w: [78, 60] }].map(sec => (
+                    <div key={sec.l} style={{ marginBottom: "1rem" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: ".5rem", marginBottom: ".4rem" }}>
+                        <span style={{ fontSize: ".65rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".1em", color: "var(--ink)" }}>{sec.l}</span>
+                        <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+                      </div>
+                      {sec.w.map((w, wi) => <div key={wi} style={{ height: 5, borderRadius: 9, background: wi === 0 ? "var(--accent)" : "var(--border)", width: `${w}%`, marginBottom: ".3rem" }} />)}
+                    </div>
+                  ))}
+                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "8rem", background: "linear-gradient(to top, var(--card-bg) 50%, transparent)", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: "1rem" }}>
+                    <MagneticButton>
+                      <a className="btn btn-primary" href={personalInfo.resumeUrl} download>
+                        <FiDownload size={15} /> Download Full Resume
+                      </a>
+                    </MagneticButton>
+                  </div>
+                </div>
+              </div>
+            </Tilt3DCard>
+          </div>
+        </div>
       </div>
+      <style>{`@media(max-width:768px){ div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }

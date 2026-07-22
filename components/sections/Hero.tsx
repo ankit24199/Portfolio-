@@ -1,339 +1,291 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, Phone, Download, ExternalLink } from "lucide-react";
-import { personalInfo, socialLinks } from "@/lib/portfolio-data";
+import { personalInfo, socialLinks, stats } from "@/lib/portfolio-data";
+import { FiGithub, FiDownload, FiArrowRight, FiMail } from "react-icons/fi";
+import { FaLinkedinIn } from "react-icons/fa";
+import MagneticButton from "@/components/ui/MagneticButton";
 
 const TITLES = [
-  "Software Engineer",
   "MERN Stack Developer",
   "React.js Developer",
   "Node.js Developer",
   "Full Stack Developer",
-  "JavaScript Developer",
-];
-
-const TECH_ICONS = [
-  { label: "React", color: "#61DAFB", angle: 0 },
-  { label: "Node", color: "#339933", angle: 60 },
-  { label: "MongoDB", color: "#47A248", angle: 120 },
-  { label: "JS", color: "#F7DF1E", angle: 180 },
-  { label: "Git", color: "#F05032", angle: 240 },
-  { label: "Express", color: "#ffffff", angle: 300 },
 ];
 
 function TypeWriter({ texts }: { texts: string[] }) {
-  const [current, setCurrent] = useState(0);
-  const [displayed, setDisplayed] = useState("");
-  const [phase, setPhase] = useState<"typing" | "pause" | "deleting">("typing");
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [cur, setCur] = useState(0);
+  const [disp, setDisp] = useState("");
+  const [phase, setPhase] = useState<"typing" | "pause" | "del">("typing");
+  const t = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const fullText = texts[current];
-
+    const full = texts[cur];
     if (phase === "typing") {
-      if (displayed.length < fullText.length) {
-        timeoutRef.current = setTimeout(
-          () => setDisplayed(fullText.slice(0, displayed.length + 1)),
-          60
-        );
-      } else {
-        timeoutRef.current = setTimeout(() => setPhase("pause"), 1800);
-      }
+      if (disp.length < full.length) t.current = setTimeout(() => setDisp(full.slice(0, disp.length + 1)), 65);
+      else t.current = setTimeout(() => setPhase("pause"), 2200);
     } else if (phase === "pause") {
-      timeoutRef.current = setTimeout(() => setPhase("deleting"), 400);
+      t.current = setTimeout(() => setPhase("del"), 300);
     } else {
-      if (displayed.length > 0) {
-        timeoutRef.current = setTimeout(
-          () => setDisplayed(displayed.slice(0, -1)),
-          35
-        );
-      } else {
-        setCurrent((c) => (c + 1) % texts.length);
-        setPhase("typing");
-      }
+      if (disp.length > 0) t.current = setTimeout(() => setDisp(disp.slice(0, -1)), 38);
+      else { setCur((c) => (c + 1) % texts.length); setPhase("typing"); }
     }
-
-    return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
-  }, [displayed, phase, current, texts]);
+    return () => { if (t.current) clearTimeout(t.current); };
+  }, [disp, phase, cur, texts]);
 
   return (
-    <span className="gradient-text font-display font-bold">
-      {displayed}
-      <span className="animate-blink text-indigo-400">|</span>
+    <span style={{ color: "var(--accent)", fontFamily: "Space Grotesk, sans-serif", fontWeight: 700 }}>
+      {disp}
+      <span className="animate-blink" style={{ display: "inline-block", marginLeft: 2 }}>|</span>
     </span>
   );
 }
 
-function OrbitingIcons() {
-  return (
-    <div className="absolute inset-0 pointer-events-none">
-      {TECH_ICONS.map((tech, i) => {
-        const radius = 200;
-        const rad = (tech.angle * Math.PI) / 180;
-        const x = Math.cos(rad) * radius;
-        const y = Math.sin(rad) * radius;
-
-        return (
-          <motion.div
-            key={tech.label}
-            className="absolute"
-            style={{
-              left: "50%",
-              top: "50%",
-              x: x - 24,
-              y: y - 24,
-            }}
-            animate={{
-              rotate: [0, 360],
-            }}
-            transition={{
-              duration: 20 + i * 3,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          >
-            <motion.div
-              animate={{ rotate: [0, -360] }}
-              transition={{
-                duration: 20 + i * 3,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              className="w-12 h-12 rounded-xl glass flex items-center justify-center text-xs font-bold font-mono shadow-lg"
-              style={{
-                color: tech.color,
-                border: `1px solid ${tech.color}30`,
-                boxShadow: `0 0 15px ${tech.color}20`,
-              }}
-            >
-              {tech.label}
-            </motion.div>
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-}
-
 export default function Hero() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.3 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
+  const [imgSrc, setImgSrc] = useState("/images/profile.jpg");
 
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20"
+      style={{
+        background: "var(--bg)",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        position: "relative",
+        paddingTop: "5rem",
+      }}
     >
-      {/* Background glows */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-cyan-500/8 rounded-full blur-[80px] pointer-events-none" />
+      {/* Main content */}
+      <div
+        className="wrap"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1.2fr 1fr",
+          alignItems: "center",
+          gap: "4rem",
+          paddingTop: "3rem",
+          paddingBottom: "3rem",
+        }}
+      >
+        {/* ─── LEFT: Text content ─── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          <div style={{ opacity: 0, animation: "fadeSlideUp .7s cubic-bezier(0.22,1,0.36,1) .1s both" }}>
+            <p style={{ color: "var(--ink2)", fontSize: "1.1rem", fontWeight: 500, fontStyle: "italic" }}>
+              Hey, I&apos;m
+            </p>
+          </div>
 
-      <div className="section-container w-full grid lg:grid-cols-2 gap-12 items-center py-12">
-        {/* LEFT — Text content */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="flex flex-col gap-6 lg:order-1 order-2"
-        >
-          {/* Greeting */}
-          <motion.div variants={itemVariants}>
-            <span className="section-tag">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              Available for opportunities
-            </span>
-          </motion.div>
+          <div style={{ opacity: 0, animation: "fadeSlideUp .7s cubic-bezier(0.22,1,0.36,1) .2s both" }}>
+            <h1
+              className="font-display"
+              style={{
+                fontSize: "clamp(2.8rem, 6vw, 4.5rem)",
+                fontWeight: 800,
+                color: "var(--ink)",
+                lineHeight: 1.05,
+                letterSpacing: "-.03em",
+              }}
+            >
+              <span className="gradient-text">ANKIT</span>
+              <br />
+              <span style={{ textTransform: "uppercase" }}>YADAV</span>
+            </h1>
+          </div>
 
-          <motion.p
-            variants={itemVariants}
-            className="font-mono text-slate-400 text-sm tracking-widest uppercase"
-          >
-            Hello, I&apos;m
-          </motion.p>
-
-          <motion.h1
-            variants={itemVariants}
-            className="font-display font-extrabold text-5xl lg:text-7xl text-white leading-tight"
-          >
-            {personalInfo.name}
-          </motion.h1>
-
-          {/* Typing animation */}
-          <motion.div
-            variants={itemVariants}
-            className="text-2xl lg:text-3xl font-display min-h-[2.5rem]"
+          <div
+            style={{
+              fontSize: "clamp(1rem, 2vw, 1.3rem)",
+              minHeight: "2rem",
+              opacity: 0,
+              animation: "fadeSlideUp .7s cubic-bezier(0.22,1,0.36,1) .3s both",
+            }}
           >
             <TypeWriter texts={TITLES} />
-          </motion.div>
-
-          {/* Summary */}
-          <motion.p
-            variants={itemVariants}
-            className="text-slate-400 text-base leading-relaxed max-w-xl"
-          >
-            {personalInfo.summary}
-          </motion.p>
-
-          {/* CTA buttons */}
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-wrap gap-3 mt-2"
-          >
-            <motion.button
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() =>
-                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
-              }
-              className="btn-primary flex items-center gap-2 text-sm"
-            >
-              <ExternalLink size={16} />
-              View Projects
-            </motion.button>
-
-            <motion.a
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              href={personalInfo.resumeUrl}
-              download
-              className="btn-secondary flex items-center gap-2 text-sm"
-            >
-              <Download size={16} />
-              Download Resume
-            </motion.a>
-
-            <motion.button
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() =>
-                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
-              }
-              className="btn-outline flex items-center gap-2 text-sm"
-            >
-              Let&apos;s Connect
-            </motion.button>
-          </motion.div>
-
-          {/* Social icons */}
-          <motion.div variants={itemVariants} className="flex items-center gap-4">
-            {[
-              { icon: Github, href: socialLinks.github, label: "GitHub" },
-              { icon: Linkedin, href: socialLinks.linkedin, label: "LinkedIn" },
-              { icon: Mail, href: socialLinks.email, label: "Email" },
-              { icon: Phone, href: socialLinks.phone, label: "Phone" },
-            ].map(({ icon: Icon, href, label }) => (
-              <motion.a
-                key={label}
-                href={href}
-                target={href.startsWith("http") ? "_blank" : "_self"}
-                rel="noopener noreferrer"
-                aria-label={label}
-                whileHover={{ scale: 1.15, y: -3 }}
-                whileTap={{ scale: 0.9 }}
-                className="w-10 h-10 rounded-xl glass flex items-center justify-center text-slate-400 hover:text-indigo-400 hover:border-indigo-500/30 transition-colors border border-white/[0.06]"
-              >
-                <Icon size={18} />
-              </motion.a>
-            ))}
-          </motion.div>
-        </motion.div>
-
-        {/* RIGHT — Portrait */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, x: 50 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          className="relative flex items-center justify-center lg:order-2 order-1"
-        >
-          {/* Outer glow ring */}
-          <div className="absolute w-80 h-80 lg:w-96 lg:h-96 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-600/20 blur-3xl animate-pulse-ring" />
-
-          {/* Spinning border ring 1 */}
-          <div className="absolute w-72 h-72 lg:w-80 lg:h-80 rounded-full border border-indigo-500/20 animate-spin-slow" />
-          <div className="absolute w-64 h-64 lg:w-72 lg:h-72 rounded-full border border-purple-500/15 animate-spin-reverse" />
-
-          {/* Portrait container */}
-          <motion.div
-            animate={{ y: [0, -12, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            className="relative z-10 w-56 h-56 lg:w-64 lg:h-64"
-          >
-            {/* Gradient ring frame */}
-            <div className="gradient-border w-full h-full rounded-full p-1">
-              <div className="w-full h-full rounded-full overflow-hidden glass-strong relative">
-                {/* Profile photo — replace /images/profile.jpg with your actual photo */}
-                <img
-                  src="/images/profile.jpg"
-                  alt="Ankit Yadav — MERN Stack Developer"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.currentTarget as HTMLImageElement;
-                    target.style.display = "none";
-                    const parent = target.parentElement;
-                    if (parent) {
-                      parent.innerHTML = `<div class="w-full h-full bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 flex items-center justify-center"><span class="font-display font-bold text-5xl text-white">AY</span></div>`;
-                    }
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Floating badge card */}
-            <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute -bottom-6 -right-8 glass border border-white/[0.1] rounded-xl px-3 py-2 text-xs font-mono"
-            >
-              <span className="text-emerald-400 font-bold">{"</>"}</span>
-              <span className="text-slate-300 ml-1">Full Stack</span>
-            </motion.div>
-
-            {/* Experience badge */}
-            <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="absolute -top-4 -left-8 glass border border-white/[0.1] rounded-xl px-3 py-2 text-xs font-mono"
-            >
-              <span className="text-indigo-400 font-bold">6</span>
-              <span className="text-slate-300 ml-1">Mo Exp</span>
-            </motion.div>
-          </motion.div>
-
-          {/* Orbiting tech icons */}
-          <div className="absolute inset-0">
-            <OrbitingIcons />
           </div>
-        </motion.div>
+
+          <p
+            style={{
+              color: "var(--ink2)",
+              lineHeight: 1.75,
+              maxWidth: "30rem",
+              fontSize: ".92rem",
+              opacity: 0,
+              animation: "fadeSlideUp .7s cubic-bezier(0.22,1,0.36,1) .4s both",
+            }}
+          >
+            Transforming ideas into scalable web applications — MERN stack development that captivates, 
+            engages, and delivers results.
+          </p>
+
+          {/* CTA */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: ".75rem",
+              alignItems: "center",
+              opacity: 0,
+              animation: "fadeSlideUp .7s cubic-bezier(0.22,1,0.36,1) .5s both",
+            }}
+          >
+            <MagneticButton>
+              <button
+                className="btn btn-dark"
+                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+                style={{ borderRadius: "9999px" }}
+              >
+                Contact Me <FiArrowRight size={16} />
+              </button>
+            </MagneticButton>
+            <MagneticButton>
+              <a className="btn btn-ghost" href={personalInfo.resumeUrl} download style={{ borderRadius: "9999px" }}>
+                <FiDownload size={16} /> Resume
+              </a>
+            </MagneticButton>
+          </div>
+
+          {/* Socials */}
+          <div
+            style={{
+              display: "flex",
+              gap: ".75rem",
+              marginTop: ".5rem",
+              opacity: 0,
+              animation: "fadeSlideUp .7s cubic-bezier(0.22,1,0.36,1) .6s both",
+            }}
+          >
+            {[
+              { icon: <FiGithub size={18} />, href: socialLinks.github, label: "GitHub" },
+              { icon: <FaLinkedinIn size={16} />, href: socialLinks.linkedin, label: "LinkedIn" },
+              { icon: <FiMail size={17} />, href: socialLinks.email, label: "Email" },
+            ].map(({ icon, href, label }) => (
+              <MagneticButton key={label}>
+                <a
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : "_self"}
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  style={{
+                    width: 42, height: 42, borderRadius: "50%",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    color: "var(--ink)", textDecoration: "none",
+                    background: "var(--card-bg)",
+                    border: "1.5px solid var(--border)",
+                    transition: "all .2s",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "var(--accent)"; e.currentTarget.style.color = "#fff"; e.currentTarget.style.borderColor = "var(--accent)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "var(--card-bg)"; e.currentTarget.style.color = "var(--ink)"; e.currentTarget.style.borderColor = "var(--border)"; }}
+                >
+                  {icon}
+                </a>
+              </MagneticButton>
+            ))}
+          </div>
+        </div>
+
+        {/* ─── RIGHT: Photo + Stats ─── */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "2rem",
+            opacity: 0,
+            animation: "slideInRight .85s cubic-bezier(0.22,1,0.36,1) .2s both",
+          }}
+        >
+          {/* Photo */}
+          <div
+            style={{
+              width: "clamp(260px, 28vw, 380px)",
+              height: "clamp(320px, 36vw, 480px)",
+              borderRadius: "40% 40% 42% 42% / 18% 18% 35% 35%",
+              overflow: "hidden",
+              background: "var(--card-bg2)",
+              border: "3px solid var(--border)",
+              position: "relative",
+            }}
+          >
+            <img
+              src={imgSrc}
+              alt="Ankit Yadav"
+              onError={() => { if (imgSrc !== "/images/profile.png") setImgSrc("/images/profile.png"); }}
+              style={{
+                width: "100%", height: "100%",
+                objectFit: "cover", objectPosition: "center top",
+                display: "block",
+              }}
+            />
+          </div>
+
+          {/* Stats row (like the reference) */}
+          <div style={{ display: "flex", gap: "2.5rem", textAlign: "center" }}>
+            {stats.map((s, i) => (
+              <div
+                key={s.label}
+                style={{
+                  opacity: 0,
+                  animation: `fadeSlideUp .6s cubic-bezier(0.22,1,0.36,1) ${0.5 + i * .12}s both`,
+                }}
+              >
+                <div className="font-display" style={{ fontSize: "1.75rem", fontWeight: 800, color: "var(--ink)", lineHeight: 1.1 }}>
+                  {s.value}{s.suffix}
+                </div>
+                <div style={{ color: "var(--ink2)", fontSize: ".72rem", fontWeight: 500, marginTop: ".2rem" }}>
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      {/* ─── Bottom feature strip (like Dominic reference) ─── */}
+      <div
+        style={{
+          borderTop: "1px solid var(--border)",
+          padding: "2rem 0",
+          opacity: 0,
+          animation: "fadeSlideUp .7s cubic-bezier(0.22,1,0.36,1) .7s both",
+        }}
       >
-        <span className="text-slate-500 text-xs font-mono tracking-widest uppercase">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-5 h-8 rounded-full border border-slate-600 flex items-start justify-center pt-1"
+        <div
+          className="wrap"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "2rem",
+          }}
         >
-          <div className="w-1 h-2 rounded-full bg-indigo-400" />
-        </motion.div>
-      </motion.div>
+          {[
+            { title: "Full-Stack Development", desc: "End-to-end applications using React, Node, and MongoDB." },
+            { title: "REST API Design", desc: "Clean, scalable API architectures with Express.js and JWT auth." },
+            { title: "Responsive & Modern UI", desc: "Pixel-perfect designs optimized for all devices and viewports." },
+            { title: "Performance Optimization", desc: "Fast load times through code splitting, caching, and best practices." },
+          ].map((item) => (
+            <div key={item.title}>
+              <h3 className="font-display" style={{ fontSize: ".85rem", fontWeight: 800, color: "var(--ink)", textTransform: "uppercase", letterSpacing: ".04em", marginBottom: ".4rem" }}>
+                {item.title}
+              </h3>
+              <p style={{ color: "var(--ink2)", fontSize: ".82rem", lineHeight: 1.65 }}>
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
+        @media(max-width: 860px) {
+          #home > .wrap { grid-template-columns: 1fr !important; text-align: center; }
+          #home > .wrap > div:first-child { align-items: center; }
+          #home > .wrap > div:last-child { order: -1; }
+        }
+        @media(max-width: 640px) {
+          #home > div:last-child > .wrap { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
     </section>
   );
 }

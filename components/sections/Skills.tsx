@@ -1,196 +1,174 @@
 "use client";
-import { useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { skills, skillCategories } from "@/lib/portfolio-data";
-import {
-  SiJavascript, SiC, SiReact, SiHtml5, SiCss3, SiBootstrap,
-  SiTailwindcss, SiNodedotjs, SiExpress, SiMongodb, SiRedux,
-  SiGit, SiGithub, SiPostman, SiVisualstudiocode, SiJsonwebtokens,
-} from "react-icons/si";
+import Tilt3DCard from "@/components/ui/Tilt3DCard";
 
-const iconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
-  SiJavascript, SiC, SiReact, SiHtml5, SiCss3, SiBootstrap,
-  SiTailwindcss, SiNodedotjs, SiExpress, SiMongodb, SiRedux,
-  SiGit, SiGithub, SiPostman, SiVisualstudiocode, SiJsonwebtokens,
-};
+function SkillCard({ s, i }: { s: typeof skills[0]; i: number }) {
+  const barRef = useRef<HTMLDivElement>(null);
+  const [animated, setAnimated] = useState(false);
 
-function CircularProgress({
-  percentage,
-  color,
-  size = 56,
-}: {
-  percentage: number;
-  color: string;
-  size?: number;
-}) {
-  const radius = (size - 8) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const ref = useRef<SVGCircleElement>(null);
-  const inView = useInView({ current: ref.current }, { once: true });
-  const offset = circumference - (inView ? percentage / 100 : 0) * circumference;
+  useEffect(() => {
+    const bar = barRef.current;
+    if (!bar) return;
+    // Immediately set width if already in view; else observe
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAnimated(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    obs.observe(bar);
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <svg width={size} height={size} className="-rotate-90">
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill="none"
-        stroke="rgba(255,255,255,0.05)"
-        strokeWidth={4}
-      />
-      <circle
-        ref={ref}
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill="none"
-        stroke={color}
-        strokeWidth={4}
-        strokeLinecap="round"
-        strokeDasharray={circumference}
-        strokeDashoffset={offset}
-        className="skill-ring"
-        style={{
-          filter: `drop-shadow(0 0 6px ${color}80)`,
-          transition: "stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1)",
-        }}
-      />
-    </svg>
-  );
-}
-
-function SkillCard({ skill, delay }: { skill: typeof skills[0]; delay: number }) {
-  const [hovered, setHovered] = useState(false);
-  const IconComponent = iconMap[skill.icon] || SiJavascript;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.5 }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      className="relative glass border border-white/[0.06] rounded-2xl p-5 card-hover group cursor-default overflow-hidden"
+    <div
       style={{
-        boxShadow: hovered ? `0 20px 50px ${skill.color}20` : undefined,
-        borderColor: hovered ? `${skill.color}30` : undefined,
-        transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+        opacity: 0,
+        animation: `fadeSlideUp .6s cubic-bezier(0.22,1,0.36,1) ${i * 0.07}s both`,
       }}
     >
-      {/* Hover glow */}
-      <div
-        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
-        style={{ background: `radial-gradient(circle at 50% 0%, ${skill.color}12 0%, transparent 70%)` }}
-      />
-
-      <div className="flex items-start justify-between mb-3 relative z-10">
-        <div className="flex items-center gap-3">
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: `${skill.color}15`, border: `1px solid ${skill.color}25` }}
-          >
-            <IconComponent style={{ color: skill.color }} className="w-5 h-5" />
-          </div>
-          <div>
-            <p className="font-semibold text-sm text-white leading-none">{skill.name}</p>
-            <p className="text-slate-500 text-xs mt-0.5">{skill.category}</p>
-          </div>
-        </div>
-        <div className="relative">
-          <CircularProgress percentage={skill.level} color={skill.color} size={48} />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-[9px] font-bold font-mono" style={{ color: skill.color }}>
-              {skill.level}%
+      <Tilt3DCard maxTilt={8} scale={1.02}>
+        <div
+          style={{
+            background: "var(--card-bg)",
+            border: "1px solid var(--border)",
+            borderRadius: "1rem",
+            padding: "1.25rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: ".85rem",
+            transition: "border-color .25s",
+            cursor: "default",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
+          onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
+        >
+          {/* Header */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
+              <div
+                style={{
+                  width: "2.5rem",
+                  height: "2.5rem",
+                  borderRadius: ".6rem",
+                  background: s.bg,
+                  border: `1.5px solid ${s.color}40`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: ".78rem",
+                  fontWeight: 800,
+                  color: s.color,
+                  fontFamily: "Space Grotesk, sans-serif",
+                  flexShrink: 0,
+                }}
+              >
+                {s.name.slice(0, 2).toUpperCase()}
+              </div>
+              <div>
+                <p style={{ fontWeight: 700, fontSize: ".9rem", color: "var(--ink)", lineHeight: 1.2 }}>{s.name}</p>
+                <p style={{ color: "var(--ink3)", fontSize: ".72rem", marginTop: ".15rem" }}>{s.category}</p>
+              </div>
+            </div>
+            <span style={{ fontFamily: "monospace", fontWeight: 700, fontSize: ".85rem", color: s.color }}>
+              {s.level}%
             </span>
           </div>
-        </div>
-      </div>
 
-      {/* Progress bar */}
-      <div className="relative z-10">
-        <div className="h-1 rounded-full bg-white/5 overflow-hidden">
-          <motion.div
-            initial={{ width: 0 }}
-            whileInView={{ width: `${skill.level}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, delay, ease: "easeOut" }}
-            className="h-full rounded-full"
-            style={{ background: `linear-gradient(90deg, ${skill.color}, ${skill.color}80)` }}
-          />
+          {/* Progress bar */}
+          <div ref={barRef} className="skill-track">
+            <div
+              className="skill-fill"
+              style={{
+                width: animated ? `${s.level}%` : "0%",
+                background: `linear-gradient(90deg, ${s.color}, var(--accent2))`,
+                transition: `width 1.2s cubic-bezier(0.22,1,0.36,1) ${i * 0.06}s`,
+              }}
+            />
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </Tilt3DCard>
+    </div>
   );
 }
 
 export default function Skills() {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [active, setActive] = useState("All");
+  // Force remount on filter change
+  const [filterKey, setFilterKey] = useState(0);
 
-  const filtered =
-    activeCategory === "All"
-      ? skills
-      : skills.filter((s) => s.category === activeCategory);
+  const filtered = active === "All" ? skills : skills.filter((s) => s.category === active);
+
+  const handleFilter = (cat: string) => {
+    setActive(cat);
+    setFilterKey((k) => k + 1);
+  };
 
   return (
-    <section id="skills" className="py-24 relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/5 to-transparent pointer-events-none" />
-
-      <div className="section-container">
+    <section id="skills" style={{ background: "var(--bg)", color: "var(--ink)", padding: "6rem 0", position: "relative" }}>
+      <div className="wrap" style={{ position: "relative", zIndex: 1 }}>
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <span className="section-tag">
-            <span className="w-2 h-2 rounded-full bg-purple-400" />
-            Technical Arsenal
-          </span>
-          <h2 className="font-display font-bold text-4xl lg:text-5xl mt-4 mb-4">
-            Skills &{" "}
-            <span className="gradient-text">Technologies</span>
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <div className="section-label" style={{ display: "inline-flex", justifyContent: "center" }}>Technical Arsenal</div>
+          <h2
+            className="font-display"
+            style={{ fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 800, color: "var(--ink)", lineHeight: 1.15, marginTop: "1rem", marginBottom: "1rem" }}
+          >
+            Skills &amp; <span className="gradient-text">Technologies</span>
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
+          <p style={{ color: "var(--ink2)", maxWidth: "42rem", margin: "0 auto 2rem auto" }}>
             A curated set of technologies I use to build modern, scalable web applications.
           </p>
-        </motion.div>
 
-        {/* Filter tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-2 mb-10"
+          {/* Filter tabs */}
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: ".5rem" }}>
+            {skillCategories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => handleFilter(cat)}
+                style={{
+                  padding: ".45rem 1rem",
+                  borderRadius: ".6rem",
+                  fontSize: ".8rem",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  transition: "all .2s",
+                  border: "1.5px solid",
+                  borderColor: active === cat ? "var(--accent)" : "var(--border)",
+                  background: active === cat ? "var(--accent)" : "transparent",
+                  color: active === cat ? "#fff" : "var(--ink2)",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Skills grid */}
+        <div
+          key={filterKey}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+            gap: "1.25rem",
+          }}
         >
-          {skillCategories.map((cat) => (
-            <motion.button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.96 }}
-              className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                activeCategory === cat
-                  ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/30"
-                  : "glass border border-white/[0.06] text-slate-400 hover:text-white hover:border-indigo-500/30"
-              }`}
-            >
-              {cat}
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Skill grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filtered.map((skill, i) => (
-            <SkillCard key={skill.name} skill={skill} delay={i * 0.06} />
+          {filtered.map((s, i) => (
+            <SkillCard key={s.name} s={s} i={i} />
           ))}
         </div>
+
+        {filtered.length === 0 && (
+          <div style={{ textAlign: "center", padding: "4rem", color: "var(--ink3)" }}>
+            No skills found in this category.
+          </div>
+        )}
       </div>
     </section>
   );

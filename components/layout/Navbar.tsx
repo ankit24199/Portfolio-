@@ -1,162 +1,176 @@
 "use client";
 import { useEffect, useState } from "react";
-import { motion, useScroll, AnimatePresence } from "framer-motion";
-import { Menu, X, Moon, Sun, Code2 } from "lucide-react";
 import { navLinks } from "@/lib/portfolio-data";
+import { FiMenu, FiX, FiSun, FiMoon } from "react-icons/fi";
 
 export default function Navbar() {
-  const [activeSection, setActiveSection] = useState("home");
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isDark, setIsDark] = useState(true);
-  const { scrollYProgress } = useScroll();
+  const [active, setActive] = useState("home");
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (v) => setProgress(v * 100));
-    return unsubscribe;
-  }, [scrollYProgress]);
+    // Read saved preference, default to light
+    const saved = localStorage.getItem("theme") as "light" | "dark" | null;
+    const applied = saved ?? "light";
+    setTheme(applied);
+    document.documentElement.setAttribute("data-theme", applied);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-
-      const sections = navLinks.map((l) => l.href.replace("#", ""));
-      for (const id of sections.reverse()) {
+    const onScroll = () => {
+      const s = window.scrollY;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(max > 0 ? (s / max) * 100 : 0);
+      setScrolled(s > 40);
+      const ids = navLinks.map((l) => l.href.replace("#", "")).reverse();
+      for (const id of ids) {
         const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 100) {
-            setActiveSection(id);
-            break;
-          }
-        }
+        if (el && el.getBoundingClientRect().top <= 140) { setActive(id); break; }
       }
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollTo = (href: string) => {
-    const id = href.replace("#", "");
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    setIsOpen(false);
+  const toggleTheme = () => {
+    const next = theme === "light" ? "dark" : "light";
+    setTheme(next);
+    localStorage.setItem("theme", next);
+    document.documentElement.setAttribute("data-theme", next);
+  };
+
+  const go = (href: string) => {
+    document.getElementById(href.replace("#", ""))?.scrollIntoView({ behavior: "smooth" });
+    setOpen(false);
   };
 
   return (
     <>
-      {/* Progress bar */}
-      <div
-        className="progress-bar"
-        style={{ width: `${progress}%` }}
-      />
+      {/* Scroll progress */}
+      <div className="progress-bar" style={{ width: `${progress}%` }} />
 
-      <motion.header
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled
-            ? "glass border-b border-white/[0.06] py-3"
-            : "py-5 bg-transparent"
-        }`}
+      <header
+        className="navbar-animate"
+        style={{
+          position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
+          transition: "all .4s",
+          padding: scrolled ? ".6rem 0" : ".85rem 0",
+          background: "var(--nav-bg)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderBottom: `1px solid ${scrolled ? "var(--nav-border)" : "transparent"}`,
+        }}
       >
-        <div className="section-container flex items-center justify-between">
+        <div className="wrap" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
+
           {/* Logo */}
-          <motion.button
-            onClick={() => scrollTo("#home")}
-            className="flex items-center gap-2 group"
-            whileHover={{ scale: 1.02 }}
+          <button
+            onClick={() => go("#home")}
+            style={{ border: "none", background: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: ".5rem", flexShrink: 0 }}
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center glow-primary">
-              <Code2 size={16} className="text-white" />
+            <span className="font-display" style={{ color: "var(--accent)", fontWeight: 800, fontSize: "1.1rem" }}>&lt;/&gt;</span>
+            <div>
+              <p className="font-display" style={{ color: "var(--ink)", fontWeight: 800, fontSize: ".92rem", lineHeight: 1.1 }}>
+                Ankit Yadav
+              </p>
+              <p style={{ color: "var(--accent)", fontSize: ".65rem", fontWeight: 600, lineHeight: 1 }}>
+                MERN Stack Developer
+              </p>
             </div>
-            <span className="font-display font-bold text-lg gradient-text">
-              AY
-            </span>
-          </motion.button>
+          </button>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-6">
-            {navLinks.map((link) => (
+          <nav style={{ display: "flex", alignItems: "center", gap: ".1rem" }} className="hidden-mobile">
+            {navLinks.map((l) => (
               <button
-                key={link.href}
-                onClick={() => scrollTo(link.href)}
-                className={`nav-link ${
-                  activeSection === link.href.replace("#", "") ? "active" : ""
-                }`}
+                key={l.href}
+                onClick={() => go(l.href)}
+                className={`nav-link${active === l.href.replace("#", "") ? " active" : ""}`}
               >
-                {link.label}
+                {l.label.toUpperCase()}
               </button>
             ))}
           </nav>
 
-          {/* Right actions */}
-          <div className="flex items-center gap-3">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsDark(!isDark)}
-              className="w-9 h-9 rounded-lg glass flex items-center justify-center text-slate-400 hover:text-white transition-colors"
-              aria-label="Toggle theme"
+          {/* Right: theme toggle */}
+          <div style={{ display: "flex", alignItems: "center", gap: ".5rem", flexShrink: 0 }}>
+            {/* Toggle button — simple, clean */}
+            <button
+              onClick={toggleTheme}
+              aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+              className="hidden-mobile"
+              style={{
+                width: 40, height: 40, borderRadius: "50%",
+                border: "1.5px solid var(--border)",
+                background: "var(--card-bg)",
+                color: "var(--ink)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                cursor: "pointer", transition: "all .25s",
+                fontSize: "1rem",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.color = "var(--accent)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--ink)"; }}
             >
-              {isDark ? <Moon size={16} /> : <Sun size={16} />}
-            </motion.button>
+              {theme === "light" ? <FiMoon size={17} /> : <FiSun size={17} />}
+            </button>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => scrollTo("#contact")}
-              className="hidden md:block btn-primary text-sm py-2 px-4"
+            {/* Hamburger */}
+            <button
+              onClick={() => setOpen(!open)}
+              className="show-mobile"
+              style={{
+                width: 40, height: 40, borderRadius: ".65rem",
+                border: "1.5px solid var(--border)",
+                background: "var(--card-bg)",
+                cursor: "pointer", display: "none", alignItems: "center", justifyContent: "center",
+                color: "var(--ink)",
+              }}
             >
-              Hire Me
-            </motion.button>
-
-            {/* Mobile menu toggle */}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden w-9 h-9 rounded-lg glass flex items-center justify-center"
-              aria-label="Menu"
-            >
-              {isOpen ? <X size={18} /> : <Menu size={18} />}
-            </motion.button>
+              {open ? <FiX size={18} /> : <FiMenu size={18} />}
+            </button>
           </div>
         </div>
 
         {/* Mobile drawer */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden glass-strong border-t border-white/[0.06] mt-3"
+        <div style={{ maxHeight: open ? "600px" : "0", overflow: "hidden", transition: "max-height .35s ease", borderTop: open ? "1px solid var(--border)" : "none" }}>
+          <nav className="wrap" style={{ display: "flex", flexDirection: "column", gap: ".25rem", padding: "1rem 2rem" }}>
+            {navLinks.map((l) => (
+              <button
+                key={l.href}
+                onClick={() => go(l.href)}
+                style={{
+                  textAlign: "left", padding: ".65rem .75rem", borderRadius: ".6rem",
+                  fontSize: ".88rem", fontWeight: 600, border: "none", cursor: "pointer",
+                  transition: "all .2s",
+                  background: active === l.href.replace("#", "") ? "var(--glow)" : "transparent",
+                  color: active === l.href.replace("#", "") ? "var(--accent)" : "var(--ink2)",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                {l.label}
+              </button>
+            ))}
+            {/* Mobile theme toggle */}
+            <button
+              onClick={toggleTheme}
+              style={{
+                textAlign: "left", padding: ".65rem .75rem", borderRadius: ".6rem",
+                fontSize: ".88rem", fontWeight: 600, border: "none", cursor: "pointer",
+                background: "transparent", color: "var(--ink2)", fontFamily: "Inter, sans-serif",
+                display: "flex", alignItems: "center", gap: ".5rem",
+              }}
             >
-              <nav className="section-container py-4 flex flex-col gap-1">
-                {navLinks.map((link, i) => (
-                  <motion.button
-                    key={link.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    onClick={() => scrollTo(link.href)}
-                    className={`text-left py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                      activeSection === link.href.replace("#", "")
-                        ? "text-white bg-indigo-500/10 border border-indigo-500/20"
-                        : "text-slate-400 hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    {link.label}
-                  </motion.button>
-                ))}
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.header>
+              {theme === "light" ? <FiMoon size={15} /> : <FiSun size={15} />}
+              {theme === "light" ? "Dark Mode" : "Light Mode"}
+            </button>
+          </nav>
+        </div>
+      </header>
+
+      <style>{`
+        @media(min-width: 900px) { .hidden-mobile { display: flex !important; } .show-mobile { display: none !important; } }
+        @media(max-width: 899px) { .hidden-mobile { display: none !important; } .show-mobile { display: flex !important; } }
+      `}</style>
     </>
   );
 }

@@ -1,126 +1,74 @@
 "use client";
-import { motion } from "framer-motion";
 import { education } from "@/lib/portfolio-data";
-import { GraduationCap, MapPin, Calendar, Award, BookOpen } from "lucide-react";
+import Tilt3DCard from "@/components/ui/Tilt3DCard";
 
 export default function Education() {
   return (
-    <section id="education" className="py-24 relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-950/5 to-transparent pointer-events-none" />
-
-      <div className="section-container">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="section-tag">
-            <span className="w-2 h-2 rounded-full bg-cyan-400" />
-            Academic Background
-          </span>
-          <h2 className="font-display font-bold text-4xl lg:text-5xl mt-4 mb-4">
-            Education &{" "}
-            <span className="gradient-text">Learning</span>
+    <section id="education" style={{ background: "var(--bg2)", color: "var(--ink)", padding: "6rem 0" }}>
+      <div className="wrap">
+        <div className="reveal" style={{ marginBottom: "3.5rem" }}>
+          <div className="section-label">Academic Background</div>
+          <h2 className="font-display" style={{ fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 800, color: "var(--ink)", lineHeight: 1.15 }}>
+            Education &amp; <span className="gradient-text">Learning</span>
           </h2>
-        </motion.div>
-
-        <div className="max-w-3xl mx-auto">
-          {education.map((edu, i) => (
-            <motion.div
-              key={edu.degree}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.1 }}
-              className="glass border border-white/[0.06] rounded-3xl p-8 relative overflow-hidden group card-hover"
-            >
-              {/* Accent glow */}
-              <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-500/10 transition-all duration-500" />
-              <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
-
-              {/* Top bar */}
-              <div className="flex items-start justify-between gap-4 mb-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-indigo-500/20 border border-cyan-500/20 flex items-center justify-center shrink-0">
-                    <GraduationCap size={26} className="text-cyan-400" />
-                  </div>
-                  <div>
-                    <h3 className="font-display font-bold text-xl text-white leading-tight">
-                      {edu.degree}
-                    </h3>
-                    <p className="text-cyan-400 font-semibold mt-1">{edu.institution}</p>
-                    <p className="text-slate-500 text-sm mt-0.5">{edu.affiliation}</p>
-                  </div>
-                </div>
-
-                {/* CGPA badge */}
-                <div className="shrink-0 text-center glass-strong border border-white/[0.1] rounded-2xl px-4 py-3">
-                  <div className="font-display font-bold text-2xl gradient-text">{edu.cgpa}</div>
-                  <div className="text-slate-500 text-xs">CGPA</div>
-                </div>
-              </div>
-
-              {/* Meta row */}
-              <div className="flex flex-wrap gap-4 text-sm text-slate-400 mb-6">
-                <div className="flex items-center gap-2">
-                  <Calendar size={14} className="text-cyan-400" />
-                  <span className="font-mono">{edu.duration}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin size={14} className="text-cyan-400" />
-                  <span>Indore, Madhya Pradesh</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Award size={14} className="text-cyan-400" />
-                  <span>Bachelor&apos;s Degree</span>
-                </div>
-              </div>
-
-              {/* Divider */}
-              <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent mb-6" />
-
-              {/* Coursework */}
-              <div>
-                <div className="flex items-center gap-2 mb-3">
-                  <BookOpen size={15} className="text-indigo-400" />
-                  <p className="text-slate-300 text-sm font-semibold">Key Coursework</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {edu.coursework.map((course, ci) => (
-                    <motion.span
-                      key={course}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: ci * 0.07, duration: 0.3 }}
-                      className="px-3 py-1.5 rounded-xl text-xs font-medium bg-white/[0.04] border border-white/[0.06] text-slate-300 hover:border-indigo-500/30 hover:bg-indigo-500/5 hover:text-indigo-300 transition-all duration-200 cursor-default"
-                    >
-                      {course}
-                    </motion.span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-
-          {/* Timeline graduation badge */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-center mt-10"
-          >
-            <div className="inline-flex items-center gap-3 glass border border-emerald-500/20 rounded-full px-6 py-3">
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-emerald-400 font-semibold text-sm">Graduated — 2025</span>
-            </div>
-          </motion.div>
         </div>
+
+        {education.map((edu) => (
+          <div key={edu.degree} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "start" }}>
+            <div className="reveal-left">
+              <div style={{ display: "flex", alignItems: "center", gap: ".75rem", marginBottom: "1.5rem" }}>
+                <div style={{ width: "3.5rem", height: "3.5rem", borderRadius: "1rem", background: "var(--glow)", border: "1.5px solid var(--accent)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem" }}>
+                  🎓
+                </div>
+                <div>
+                  <p style={{ color: "var(--ink3)", fontSize: ".72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em" }}>Bachelor&apos;s Degree</p>
+                  <p style={{ color: "var(--accent)", fontWeight: 700, fontSize: ".95rem" }}>{edu.institution}</p>
+                </div>
+              </div>
+
+              <h3 className="font-display" style={{ fontSize: "1.4rem", fontWeight: 800, color: "var(--ink)", lineHeight: 1.25, marginBottom: "1rem" }}>{edu.degree}</h3>
+              <p style={{ color: "var(--ink2)", fontSize: ".85rem", marginBottom: "1.5rem" }}>{edu.affiliation}</p>
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem", marginBottom: "2rem" }}>
+                {[{ label: "CGPA", value: edu.cgpa }, { label: "Graduated", value: "2022" }, { label: "Duration", value: "3 Yrs" }].map((stat) => (
+                  <div key={stat.label}>
+                    <div className="font-display" style={{ fontSize: "2rem", fontWeight: 800, color: "var(--accent)" }}>{stat.value}</div>
+                    <div style={{ color: "var(--ink3)", fontSize: ".75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em" }}>{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ display: "inline-flex", alignItems: "center", gap: ".5rem", borderRadius: "9999px", padding: ".6rem 1.25rem", background: "rgba(34,197,94,.1)", border: "1px solid rgba(34,197,94,.25)" }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", animation: "pulseDot 2s ease-in-out infinite" }} />
+                <span style={{ color: "#22c55e", fontWeight: 700, fontSize: ".82rem" }}>Graduated — July 2022</span>
+              </div>
+            </div>
+
+            <div className="reveal-right">
+              <p style={{ color: "var(--ink3)", fontSize: ".75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".1em", marginBottom: "1.25rem" }}>Key Coursework</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: ".65rem" }}>
+                {edu.coursework.map((c, ci) => (
+                  <Tilt3DCard key={c} maxTilt={5} scale={1.015}>
+                    <div
+                      className={`delay-${ci + 1} reveal`}
+                      style={{ display: "flex", alignItems: "center", gap: ".75rem", padding: ".875rem 1.1rem", borderRadius: ".875rem", border: "1px solid var(--border)", background: "var(--card-bg)", transition: "border-color .2s" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
+                    >
+                      <div style={{ width: "1.75rem", height: "1.75rem", borderRadius: ".4rem", background: "var(--glow)", border: "1px solid var(--accent)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: ".68rem", fontWeight: 800, color: "var(--accent)", flexShrink: 0 }}>
+                        {String(ci + 1).padStart(2, "0")}
+                      </div>
+                      <span style={{ color: "var(--ink)", fontSize: ".9rem", fontWeight: 500 }}>{c}</span>
+                    </div>
+                  </Tilt3DCard>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
+
+      <style>{`@media(max-width:768px){ div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }

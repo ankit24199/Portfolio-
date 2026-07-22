@@ -1,131 +1,51 @@
 "use client";
-import { motion } from "framer-motion";
 import { certifications } from "@/lib/portfolio-data";
-import { SiC, SiReact } from "react-icons/si";
-import { Award, ExternalLink, Calendar, CheckCircle2 } from "lucide-react";
-
-const certIconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
-  SiC, SiReact,
-};
+import { FiExternalLink, FiCheckCircle } from "react-icons/fi";
+import MagneticButton from "@/components/ui/MagneticButton";
+import Tilt3DCard from "@/components/ui/Tilt3DCard";
 
 export default function Certifications() {
   return (
-    <section id="certifications" className="py-24 relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-950/5 to-transparent pointer-events-none" />
-
-      <div className="section-container">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="section-tag">
-            <span className="w-2 h-2 rounded-full bg-amber-400" />
-            Credentials
-          </span>
-          <h2 className="font-display font-bold text-4xl lg:text-5xl mt-4 mb-4">
-            Certifications &{" "}
-            <span className="gradient-text">Achievements</span>
+    <section id="certifications" style={{ background: "var(--bg)", color: "var(--ink)", padding: "6rem 0" }}>
+      <div className="wrap">
+        <div className="reveal" style={{ marginBottom: "3.5rem" }}>
+          <div className="section-label">Credentials</div>
+          <h2 className="font-display" style={{ fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 800, color: "var(--ink)", lineHeight: 1.15 }}>
+            Certifications &amp; <span className="gradient-text">Achievements</span>
           </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
-            Validated expertise through recognized programs and courses.
-          </p>
-        </motion.div>
+        </div>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {certifications.map((cert, i) => {
-            const TechIcon = certIconMap[cert.icon] || Award;
-            return (
-              <motion.div
-                key={cert.title}
-                initial={{ opacity: 0, y: 40, rotateY: -10 }}
-                whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: i * 0.15 }}
-                whileHover={{ y: -8 }}
-                className="glass border border-white/[0.06] rounded-3xl p-8 relative overflow-hidden group cursor-default"
-                style={{
-                  transition: "box-shadow 0.4s ease",
-                }}
-              >
-                {/* Gradient top bar */}
-                <div
-                  className="absolute top-0 left-0 right-0 h-1"
-                  style={{ background: `linear-gradient(90deg, ${cert.color}, ${cert.color}30)` }}
-                />
-
-                {/* Background glow */}
-                <div
-                  className="absolute top-0 right-0 w-40 h-40 rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none"
-                  style={{ background: cert.color }}
-                />
-
-                {/* Certificate decoration */}
-                <div className="absolute top-4 right-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Award size={80} />
-                </div>
-
-                {/* Icon */}
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 relative z-10"
-                  style={{
-                    background: `${cert.color}15`,
-                    border: `1px solid ${cert.color}30`,
-                  }}
-                >
-                  <TechIcon
-                    style={{ color: cert.color, width: 28, height: 28 }}
-                    className="w-7 h-7"
-                  />
-                </div>
-
-                {/* Content */}
-                <h3 className="font-display font-bold text-xl text-white mb-1 relative z-10">
-                  {cert.title}
-                </h3>
-                <p className="font-semibold text-sm mb-1 relative z-10" style={{ color: cert.color }}>
-                  {cert.issuer}
-                </p>
-                <p className="text-slate-400 text-sm leading-relaxed mb-5 relative z-10">
-                  {cert.description}
-                </p>
-
-                {/* Footer */}
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="flex items-center gap-2 text-slate-400 text-sm">
-                    <Calendar size={13} className="text-slate-500" />
-                    <span className="font-mono">{cert.date}</span>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: "1.5rem", maxWidth: "54rem" }}>
+          {certifications.map((cert, i) => (
+            <Tilt3DCard key={cert.title} maxTilt={8} scale={1.02}>
+              <div className={`card reveal delay-${i + 1}`} style={{ padding: 0, overflow: "hidden", height: "100%" }}>
+                {/* Header band */}
+                <div style={{ height: "5rem", background: `linear-gradient(135deg, ${cert.color}25, var(--glow))`, display: "flex", alignItems: "center", padding: "0 1.5rem", borderBottom: "1px solid var(--border)" }}>
+                  <div style={{ width: "3rem", height: "3rem", borderRadius: ".875rem", background: cert.color, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Space Grotesk, sans-serif", fontWeight: 800, fontSize: "1.4rem", color: "#fff" }}>
+                    {cert.letter}
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-semibold">
-                      <CheckCircle2 size={13} />
-                      Verified
+                </div>
+                <div style={{ padding: "1.5rem 1.75rem" }}>
+                  <h3 className="font-display" style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--ink)", marginBottom: ".2rem" }}>{cert.title}</h3>
+                  <p style={{ color: cert.color, fontWeight: 700, fontSize: ".85rem", marginBottom: ".75rem" }}>{cert.issuer}</p>
+                  <p style={{ color: "var(--ink2)", fontSize: ".875rem", lineHeight: 1.7, marginBottom: "1.25rem" }}>{cert.description}</p>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid var(--border)", paddingTop: "1rem" }}>
+                    <span style={{ color: "var(--ink3)", fontSize: ".8rem", fontFamily: "monospace" }}>📅 {cert.date}</span>
+                    <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
+                      <span style={{ display: "flex", alignItems: "center", gap: ".3rem", color: "#22c55e", fontSize: ".75rem", fontWeight: 700 }}>
+                        <FiCheckCircle size={13} /> Verified
+                      </span>
+                      <MagneticButton>
+                        <a href={cert.verifyUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost" style={{ padding: ".3rem .75rem", fontSize: ".75rem", borderRadius: ".5rem" }}>
+                          View <FiExternalLink size={10} />
+                        </a>
+                      </MagneticButton>
                     </div>
-                    <motion.a
-                      href={cert.verifyUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg transition-all"
-                      style={{
-                        background: `${cert.color}12`,
-                        border: `1px solid ${cert.color}25`,
-                        color: cert.color,
-                      }}
-                    >
-                      View
-                      <ExternalLink size={11} />
-                    </motion.a>
                   </div>
                 </div>
-              </motion.div>
-            );
-          })}
+              </div>
+            </Tilt3DCard>
+          ))}
         </div>
       </div>
     </section>

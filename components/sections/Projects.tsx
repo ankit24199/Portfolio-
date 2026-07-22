@@ -1,271 +1,150 @@
 "use client";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { projects } from "@/lib/portfolio-data";
-import {
-  Github, ExternalLink, BookOpen, Shield, Database, Plug, Activity,
-  Monitor, Lock, BarChart2, LayoutDashboard, TrendingUp, PieChart,
-  FileSpreadsheet, ChevronDown, ChevronUp,
-} from "lucide-react";
+import { FiGithub, FiExternalLink, FiChevronDown, FiChevronUp, FiArrowUpRight } from "react-icons/fi";
+import MagneticButton from "@/components/ui/MagneticButton";
+import Tilt3DCard from "@/components/ui/Tilt3DCard";
 
-const featureIconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-  Shield, Database, Plug, Activity, Monitor, Lock, BarChart2,
-  LayoutDashboard, TrendingUp, PieChart, FileSpreadsheet,
-};
-
-function ProjectCard({
-  project,
-  index,
-}: {
-  project: typeof projects[0];
-  index: number;
-}) {
+function ProjectCard({ p, i }: { p: typeof projects[0]; i: number }) {
   const [expanded, setExpanded] = useState(false);
-  const [hovered, setHovered] = useState(false);
+  const isEven = i % 2 === 0;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, delay: index * 0.15, ease: "easeOut" }}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      className="glass border border-white/[0.06] rounded-3xl overflow-hidden group relative"
-      style={{
-        boxShadow: hovered ? `0 30px 80px ${project.color}25, 0 0 0 1px ${project.color}20` : undefined,
-        transition: "box-shadow 0.4s ease",
-      }}
-    >
-      {/* Top accent line */}
+    <Tilt3DCard maxTilt={4} scale={1.01}>
       <div
-        className="h-1 w-full"
-        style={{ background: `linear-gradient(90deg, ${project.color}, ${project.color}50, transparent)` }}
-      />
-
-      {/* Mock screen / project header */}
-      <div
-        className="relative h-52 overflow-hidden"
+        className="reveal"
         style={{
-          background: `linear-gradient(135deg, ${project.color}18 0%, #050510 60%, #0a0a1a 100%)`,
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          border: "1px solid var(--border)",
+          borderRadius: "1.25rem",
+          overflow: "hidden",
+          marginBottom: "2rem",
+          background: "var(--card-bg)",
+          transition: "border-color .25s",
         }}
+        onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
+        onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
       >
-        {/* Browser chrome mockup */}
-        <div className="absolute top-4 left-4 right-4 bg-[#0d0d1f] rounded-xl border border-white/[0.06] overflow-hidden">
-          <div className="flex items-center gap-1.5 px-3 py-2 border-b border-white/[0.04]">
-            <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-            <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
-            <div className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-            <div className="flex-1 mx-3 h-4 rounded-full bg-white/[0.04] flex items-center px-2">
-              <span className="text-slate-600 text-[9px] font-mono truncate">
-                {project.title.toLowerCase().replace(/ /g, "-")}.vercel.app
-              </span>
-            </div>
-          </div>
-          {/* Mock UI inside */}
-          <div className="p-3 grid grid-cols-3 gap-2 h-28">
-            <div className="col-span-1 space-y-1.5">
-              {[70, 50, 85, 40].map((w, i) => (
-                <div
-                  key={i}
-                  className="h-2 rounded-full"
-                  style={{
-                    width: `${w}%`,
-                    background: i === 0 ? project.color : "rgba(255,255,255,0.05)",
-                  }}
-                />
-              ))}
-            </div>
-            <div className="col-span-2 space-y-2">
-              <div className="h-14 rounded-lg" style={{ background: `${project.color}15`, border: `1px solid ${project.color}20` }} />
-              <div className="grid grid-cols-2 gap-1.5">
-                {[0, 1].map((i) => (
-                  <div
-                    key={i}
-                    className="h-7 rounded-lg"
-                    style={{ background: "rgba(255,255,255,0.04)" }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Ambient glow */}
+        {/* Project Image */}
         <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-16 rounded-full blur-2xl opacity-30"
-          style={{ background: project.color }}
-        />
-      </div>
-
-      {/* Content */}
-      <div className="p-6 lg:p-8">
-        <div className="flex items-start justify-between gap-4 mb-4">
-          <div>
-            <h3 className="font-display font-bold text-2xl text-white mb-1">{project.title}</h3>
-            <p className="text-sm font-medium" style={{ color: project.color }}>{project.subtitle}</p>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <motion.a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="w-9 h-9 rounded-xl glass border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white transition-colors"
-              aria-label="GitHub"
-            >
-              <Github size={16} />
-            </motion.a>
-            <motion.a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="w-9 h-9 rounded-xl flex items-center justify-center text-white transition-colors"
-              style={{ background: project.color }}
-              aria-label="Live Demo"
-            >
-              <ExternalLink size={16} />
-            </motion.a>
-          </div>
-        </div>
-
-        <p className="text-slate-400 text-sm leading-relaxed mb-6">{project.description}</p>
-
-        {/* Tech badges */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {project.techStack.map((tech) => (
-            <span
-              key={tech}
-              className="tech-badge"
-              style={{
-                background: `${project.color}10`,
-                borderColor: `${project.color}25`,
-                color: project.color === "#ffffff" ? "#e2e8f0" : project.color,
-              }}
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-
-        {/* Feature highlights */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
-          {project.features.map((f) => {
-            const Icon = featureIconMap[f.icon] || Shield;
-            return (
-              <div
-                key={f.label}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/[0.03] border border-white/[0.04] text-xs text-slate-400"
-              >
-                <Icon size={12} style={{ color: project.color }} />
-                {f.label}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Metrics */}
-        <div className="grid grid-cols-3 gap-3 mb-4">
-          {project.metrics.map((m) => (
-            <div
-              key={m.label}
-              className="text-center rounded-xl py-3"
-              style={{ background: `${project.color}08`, border: `1px solid ${project.color}15` }}
-            >
-              <div className="font-display font-bold text-lg" style={{ color: project.color }}>
-                {m.value}
-              </div>
-              <div className="text-slate-500 text-xs">{m.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Architecture accordion */}
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="w-full flex items-center justify-between py-3 border-t border-white/[0.05] text-slate-400 hover:text-slate-200 transition-colors text-sm"
+          style={{
+            order: isEven ? 0 : 1,
+            background: `linear-gradient(135deg, ${p.color}12, var(--bg))`,
+            padding: "2rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minHeight: "280px",
+          }}
         >
-          <span className="flex items-center gap-2 font-medium">
-            <BookOpen size={14} />
-            Architecture Overview
-          </span>
-          {expanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-        </button>
+          <div style={{ width: "100%", maxWidth: "420px", background: "var(--card-bg)", borderRadius: "1rem", overflow: "hidden", border: "1.5px solid var(--border)", boxShadow: `0 8px 32px ${p.color}15` }}>
+            <div style={{ padding: ".5rem .75rem", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", gap: ".5rem" }}>
+              <div style={{ display: "flex", gap: ".3rem" }}>
+                {["#ef4444", "#f59e0b", "#22c55e"].map((c, ci) => <div key={ci} style={{ width: 8, height: 8, borderRadius: "50%", background: c, opacity: .7 }} />)}
+              </div>
+              <div style={{ flex: 1, background: "var(--border2)", borderRadius: "9999px", height: "1rem", display: "flex", alignItems: "center", paddingLeft: ".5rem" }}>
+                <span style={{ fontSize: ".6rem", color: "var(--ink3)", fontFamily: "monospace" }}>{p.id}.app</span>
+              </div>
+            </div>
+            <div style={{ overflow: "hidden" }}>
+              <img
+                src={p.image}
+                alt={`${p.title} screenshot`}
+                style={{
+                  width: "100%",
+                  height: "220px",
+                  objectFit: "cover",
+                  objectPosition: "top left",
+                  display: "block",
+                }}
+              />
+            </div>
+          </div>
+        </div>
 
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
+        {/* Content */}
+        <div style={{ order: isEven ? 1 : 0, padding: "2.5rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <span className="tag tag-blue" style={{ marginBottom: "1rem", display: "inline-block", width: "fit-content" }}>{p.subtitle}</span>
+          <h3 className="font-display" style={{ fontSize: "1.7rem", fontWeight: 800, color: "var(--ink)", marginBottom: ".6rem", lineHeight: 1.2 }}>{p.title}</h3>
+          <p style={{ color: "var(--ink2)", fontSize: ".875rem", lineHeight: 1.75, marginBottom: "1.25rem" }}>{p.description}</p>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: ".4rem", marginBottom: "1.25rem" }}>
+            {p.techStack.map((t) => <span key={t} className="tag tag-muted">{t}</span>)}
+          </div>
+
+          <div style={{ display: "flex", gap: "1.5rem", marginBottom: "1.5rem" }}>
+            {p.metrics.map((m) => (
+              <div key={m.label}>
+                <div className="font-display" style={{ fontSize: "1.25rem", fontWeight: 800, color: p.color }}>{m.value}</div>
+                <div style={{ color: "var(--ink3)", fontSize: ".72rem", fontWeight: 600 }}>{m.label}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: ".35rem", marginBottom: "1.5rem" }}>
+            {p.features.map((f) => (
+              <span key={f} style={{ fontSize: ".72rem", color: "var(--ink2)", background: "var(--border2)", borderRadius: ".5rem", padding: ".2rem .65rem", border: "1px solid var(--border)" }}>✓ {f}</span>
+            ))}
+          </div>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: ".75rem", alignItems: "center" }}>
+            {p.githubUrl && (
+              <MagneticButton>
+                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost" style={{ padding: ".6rem 1.1rem", fontSize: ".82rem" }}>
+                  <FiGithub size={14} /> Code
+                </a>
+              </MagneticButton>
+            )}
+            {p.liveUrl && (
+              <MagneticButton>
+                <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: ".6rem 1.1rem", fontSize: ".82rem" }}>
+                  <FiExternalLink size={14} /> Live Demo
+                </a>
+              </MagneticButton>
+            )}
+            <button
+              onClick={() => setExpanded(!expanded)}
+              style={{ display: "flex", alignItems: "center", gap: ".3rem", background: "none", border: "none", cursor: "pointer", color: "var(--ink3)", fontSize: ".78rem", fontWeight: 600, padding: ".6rem .75rem", fontFamily: "Inter, sans-serif" }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ink3)")}
             >
-              <p className="text-slate-400 text-sm leading-relaxed pt-2 pb-1">
-                {project.architecture}
-              </p>
-            </motion.div>
+              Architecture {expanded ? <FiChevronUp size={13} /> : <FiChevronDown size={13} />}
+            </button>
+          </div>
+
+          {expanded && (
+            <div style={{ marginTop: "1rem", padding: "1rem", borderRadius: ".875rem", background: "var(--border2)", border: "1px solid var(--border)" }}>
+              <p style={{ color: "var(--ink2)", fontSize: ".84rem", lineHeight: 1.75 }}>{p.architecture}</p>
+            </div>
           )}
-        </AnimatePresence>
+        </div>
       </div>
-    </motion.div>
+    </Tilt3DCard>
   );
 }
 
 export default function Projects() {
   return (
-    <section id="projects" className="py-24 relative overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/5 to-transparent pointer-events-none" />
-
-      <div className="section-container">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="section-tag">
-            <span className="w-2 h-2 rounded-full bg-purple-400" />
-            Featured Work
-          </span>
-          <h2 className="font-display font-bold text-4xl lg:text-5xl mt-4 mb-4">
-            Projects that{" "}
-            <span className="gradient-text">Ship</span>
-          </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
-            Full-stack applications built with production-ready architecture, clean code, and real-world use cases.
-          </p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-8">
-          {projects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} />
-          ))}
+    <section id="projects" style={{ background: "var(--bg)", color: "var(--ink)", padding: "6rem 0" }}>
+      <div className="wrap">
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: "1.5rem", marginBottom: "3.5rem" }}>
+          <div className="reveal">
+            <div className="section-label">Featured Work</div>
+            <h2 className="font-display" style={{ fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 800, color: "var(--ink)", lineHeight: 1.15 }}>
+              Projects that <span className="gradient-text">Ship</span>
+            </h2>
+          </div>
+          <MagneticButton>
+            <a href={`https://github.com/ankit24199`} target="_blank" rel="noopener noreferrer" className="btn btn-ghost reveal">
+              View All <FiArrowUpRight size={15} />
+            </a>
+          </MagneticButton>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center mt-12"
-        >
-          <a
-            href="https://github.com/ankityadav"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-secondary inline-flex items-center gap-2"
-          >
-            <Github size={16} />
-            View All Projects on GitHub
-          </a>
-        </motion.div>
+        {projects.map((p, i) => <ProjectCard key={p.id} p={p} i={i} />)}
       </div>
+
+      <style>{`@media(max-width:768px){ div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }
