@@ -1,15 +1,6 @@
 "use client";
 import { useEffect } from "react";
 
-/**
- * Global reveal hook — call ONCE in ClientLayout.
- * Uses a single IntersectionObserver + MutationObserver to catch
- * ALL .reveal / .reveal-left / .reveal-right elements as they
- * mount into the DOM, regardless of timing.
- *
- * This fixes the bug where sections rendered after the initial
- * observer scan would stay at opacity:0 forever.
- */
 export function useReveal() {
   useEffect(() => {
     const observed = new WeakSet<Element>();
@@ -19,7 +10,6 @@ export function useReveal() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             (entry.target as HTMLElement).classList.add("visible");
-            // Don't unobserve — allows re-trigger if element is re-mounted
           }
         });
       },
@@ -37,19 +27,17 @@ export function useReveal() {
         });
     };
 
-    // Initial scan
     observeNewElements();
 
-    // Watch for new elements added to DOM (e.g. sections rendering after first paint)
-    const mo = new MutationObserver(() => {
+    const observer = new MutationObserver(() => {
       observeNewElements();
     });
 
-    mo.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
       io.disconnect();
-      mo.disconnect();
+      observer.disconnect();
     };
   }, []);
 }

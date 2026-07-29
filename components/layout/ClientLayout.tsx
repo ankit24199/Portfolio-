@@ -13,7 +13,6 @@ import Contact from "@/components/sections/Contact";
 import { useReveal } from "@/hooks/useReveal";
 
 export default function ClientLayout() {
-  // Single global observer for all reveal animations
   useReveal();
 
   return (

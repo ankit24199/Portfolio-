@@ -1,7 +1,3 @@
-// ============================================================
-// PORTFOLIO DATA — Single source of truth for all content
-// ============================================================
-
 export const personalInfo = {
   name: "Ankit Yadav",
   titles: [
@@ -95,8 +91,8 @@ export const projects = [
   },
   {
     id: "expense-tracker",
-    title: "Expense Tracker",
-    subtitle: "Personal Finance & Analytics Dashboard",
+    title: "Spendwise",
+    subtitle: "Finance & Analytics Dashboard",
     description: "A full-featured personal finance application with rich analytics, interactive charts, income/expense tracking, and Excel export capabilities for comprehensive financial management.",
     techStack: ["React.js", "Node.js", "Express.js", "MongoDB", "JWT", "Chart.js"],
     features: ["JWT Authentication", "Expense Analytics", "Dashboard", "Income Tracking", "Pie & Bar Charts", "Excel Export", "Responsive Design"],

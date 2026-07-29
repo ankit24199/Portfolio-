@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { projects } from "@/lib/portfolio-data";
-import { FiGithub, FiExternalLink, FiChevronDown, FiChevronUp, FiArrowUpRight } from "react-icons/fi";
+import { FiExternalLink, FiChevronDown, FiChevronUp, FiArrowUpRight } from "react-icons/fi";
 import MagneticButton from "@/components/ui/MagneticButton";
 import Tilt3DCard from "@/components/ui/Tilt3DCard";
 
@@ -89,13 +89,6 @@ function ProjectCard({ p, i }: { p: typeof projects[0]; i: number }) {
           </div>
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: ".75rem", alignItems: "center" }}>
-            {p.githubUrl && (
-              <MagneticButton>
-                <a href={p.githubUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost" style={{ padding: ".6rem 1.1rem", fontSize: ".82rem" }}>
-                  <FiGithub size={14} /> Code
-                </a>
-              </MagneticButton>
-            )}
             {p.liveUrl && (
               <MagneticButton>
                 <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: ".6rem 1.1rem", fontSize: ".82rem" }}>
