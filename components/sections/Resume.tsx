@@ -8,7 +8,7 @@ export default function Resume() {
   return (
     <section id="resume" style={{ background: "var(--bg2)", color: "var(--ink)", padding: "6rem 0" }}>
       <div className="wrap">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
+        <div className="resume-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
           {/* Left */}
           <div className="reveal-left">
             <div className="section-label">My Resume</div>
@@ -61,7 +61,7 @@ export default function Resume() {
           </div>
         </div>
       </div>
-      <style>{`@media(max-width:768px){ div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; } }`}</style>
+      <style>{`@media(max-width:768px){ .resume-grid { grid-template-columns: 1fr !important; gap: 3rem !important; } }`}</style>
     </section>
   );
 }

@@ -12,7 +12,7 @@ function ProjectCard({ p, i }: { p: typeof projects[0]; i: number }) {
   return (
     <Tilt3DCard maxTilt={4} scale={1.01}>
       <div
-        className="reveal"
+        className="reveal project-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
@@ -137,7 +137,7 @@ export default function Projects() {
         {projects.map((p, i) => <ProjectCard key={p.id} p={p} i={i} />)}
       </div>
 
-      <style>{`@media(max-width:768px){ div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; } }`}</style>
+      <style>{`@media(max-width:768px){ .project-grid { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }

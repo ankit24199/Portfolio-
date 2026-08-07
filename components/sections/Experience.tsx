@@ -14,7 +14,7 @@ export default function Experience() {
         </div>
 
         {experience.map((job) => (
-          <div key={job.company} className="reveal" style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "3rem", alignItems: "start" }}>
+          <div key={job.company} className="reveal exp-grid" style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "3rem", alignItems: "start" }}>
             {/* Left sticky info */}
             <div style={{ position: "sticky", top: "6.5rem" }}>
               <span className="tag tag-blue" style={{ marginBottom: "1rem", display: "inline-block" }}>{job.type}</span>
@@ -39,7 +39,7 @@ export default function Experience() {
             </div>
 
             {/* Right 3D cards */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div className="exp-cards-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
               {job.responsibilities.map((r, ri) => (
                 <Tilt3DCard key={r.title} maxTilt={8} scale={1.02}>
                   <div className={`card reveal delay-${ri + 1}`} style={{ borderTop: `3px solid ${ri % 2 === 0 ? "var(--accent)" : "var(--accent2)"}`, height: "100%" }}>
@@ -55,8 +55,8 @@ export default function Experience() {
       </div>
 
       <style>{`
-        @media(max-width:860px){ .reveal[style*="grid-template-columns: 1fr 2fr"] { grid-template-columns: 1fr !important; } }
-        @media(max-width:600px){ div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; } }
+        @media(max-width:860px){ .exp-grid { grid-template-columns: 1fr !important; gap: 2rem !important; } }
+        @media(max-width:600px){ .exp-cards-grid { grid-template-columns: 1fr !important; } }
       `}</style>
     </section>
   );

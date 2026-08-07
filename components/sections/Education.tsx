@@ -14,7 +14,7 @@ export default function Education() {
         </div>
 
         {education.map((edu) => (
-          <div key={edu.degree} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "start" }}>
+          <div key={edu.degree} className="edu-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "start" }}>
             <div className="reveal-left">
               <div style={{ display: "flex", alignItems: "center", gap: ".75rem", marginBottom: "1.5rem" }}>
                 <div style={{ width: "3.5rem", height: "3.5rem", borderRadius: "1rem", background: "var(--glow)", border: "1.5px solid var(--accent)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem" }}>
@@ -68,7 +68,7 @@ export default function Education() {
         ))}
       </div>
 
-      <style>{`@media(max-width:768px){ div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; } }`}</style>
+      <style>{`@media(max-width:768px){ .edu-grid { grid-template-columns: 1fr !important; gap: 2rem !important; } }`}</style>
     </section>
   );
 }

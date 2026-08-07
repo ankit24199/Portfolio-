@@ -65,7 +65,7 @@ export default function Contact() {
           </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "start", marginBottom: 0 }}>
+        <div className="contact-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "start", marginBottom: 0 }}>
           {/* Left — contact cards */}
           <div className="reveal-left" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             <div style={{ background: "var(--card-bg)", borderRadius: "1rem", padding: "1.5rem", marginBottom: ".5rem", border: "1px solid var(--border)" }}>
@@ -121,7 +121,7 @@ export default function Contact() {
                   </div>
                 ) : (
                   <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: ".875rem" }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".875rem" }}>
+                    <div className="contact-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".875rem" }}>
                       {[{ name: "name", label: "Name", type: "text", placeholder: "Your full name" }, { name: "email", label: "Email", type: "email", placeholder: "your@email.com" }].map((f) => (
                         <div key={f.name}>
                           <label style={{ display: "block", color: "var(--ink3)", fontSize: ".7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: ".4rem" }}>{f.label}</label>
@@ -160,7 +160,10 @@ export default function Contact() {
         </div>
       </div>
 
-      <style>{`@media(max-width:768px){ div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; } }`}</style>
+      <style>{`
+        @media(max-width:860px){ .contact-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; } }
+        @media(max-width:600px){ .contact-form-grid { grid-template-columns: 1fr !important; } }
+      `}</style>
     </section>
   );
 }

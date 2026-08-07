@@ -58,7 +58,7 @@ export default function Hero() {
     >
       {/* Main content */}
       <div
-        className="wrap"
+        className="wrap hero-main-grid"
         style={{
           display: "grid",
           gridTemplateColumns: "1.2fr 1fr",
@@ -251,7 +251,7 @@ export default function Hero() {
         }}
       >
         <div
-          className="wrap"
+          className="wrap hero-features"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)",
@@ -278,12 +278,13 @@ export default function Hero() {
 
       <style>{`
         @media(max-width: 860px) {
-          #home > .wrap { grid-template-columns: 1fr !important; text-align: center; }
-          #home > .wrap > div:first-child { align-items: center; }
-          #home > .wrap > div:last-child { order: -1; }
+          .hero-main-grid { grid-template-columns: 1fr !important; text-align: center; }
+          .hero-main-grid > div:first-child { align-items: center; }
+          .hero-main-grid > div:last-child { order: -1; }
+          .hero-features { grid-template-columns: 1fr 1fr !important; }
         }
         @media(max-width: 640px) {
-          #home > div:last-child > .wrap { grid-template-columns: 1fr 1fr !important; }
+          .hero-features { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </section>
