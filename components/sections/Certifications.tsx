@@ -25,12 +25,12 @@ export default function Certifications() {
                     {cert.letter}
                   </div>
                 </div>
-                <div style={{ padding: "1.5rem 1.75rem" }}>
+                <div style={{ padding: "1.5rem" }}>
                   <h3 className="font-display" style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--ink)", marginBottom: ".2rem" }}>{cert.title}</h3>
                   <p style={{ color: cert.color, fontWeight: 700, fontSize: ".85rem", marginBottom: ".75rem" }}>{cert.issuer}</p>
                   <p style={{ color: "var(--ink2)", fontSize: ".875rem", lineHeight: 1.7, marginBottom: "1.25rem" }}>{cert.description}</p>
                   <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem", borderTop: "1px solid var(--border)", paddingTop: "1rem" }}>
-                    <span style={{ color: "var(--ink3)", fontSize: ".8rem", fontFamily: "monospace" }}>📅 {cert.date}</span>
+                    <span style={{ display: "flex", alignItems: "center", gap: ".35rem", color: "var(--ink3)", fontSize: ".8rem", fontFamily: "monospace" }}>📅 <span>{cert.date}</span></span>
                     <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
                       <span style={{ display: "flex", alignItems: "center", gap: ".3rem", color: "#22c55e", fontSize: ".75rem", fontWeight: 700 }}>
                         <FiCheckCircle size={13} /> Verified
