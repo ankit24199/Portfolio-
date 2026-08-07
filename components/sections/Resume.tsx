@@ -1,15 +1,15 @@
 "use client";
 import { personalInfo } from "@/lib/portfolio-data";
 import { FiDownload, FiPrinter, FiExternalLink } from "react-icons/fi";
-import MagneticButton from "@/components/ui/MagneticButton";
-import Tilt3DCard from "@/components/ui/Tilt3DCard";
+import MagneticButton from "@/components/layout/MagneticButton";
+import Tilt3DCard from "@/components/layout/Tilt3DCard";
 
 export default function Resume() {
   return (
     <section id="resume" style={{ background: "var(--bg2)", color: "var(--ink)", padding: "6rem 0" }}>
       <div className="wrap">
         <div className="resume-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
-          {/* Left */}
+
           <div className="reveal-left">
             <div className="section-label">My Resume</div>
             <h2 className="font-display" style={{ fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 800, color: "var(--ink)", lineHeight: 1.15, marginBottom: "1.5rem" }}>
@@ -25,7 +25,7 @@ export default function Resume() {
             </div>
           </div>
 
-          {/* Right — preview */}
+
           <div className="reveal-right">
             <Tilt3DCard maxTilt={8} scale={1.02}>
               <div style={{ background: "var(--card-bg)", borderRadius: "1.25rem", overflow: "hidden", border: "1.5px solid var(--border)" }}>

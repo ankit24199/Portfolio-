@@ -10,7 +10,7 @@ import Education from "@/components/sections/Education";
 import Certifications from "@/components/sections/Certifications";
 import Resume from "@/components/sections/Resume";
 import Contact from "@/components/sections/Contact";
-import { useReveal } from "@/hooks/useReveal";
+import { useReveal } from "@/lib/useReveal";
 
 export default function ClientLayout() {
   useReveal();

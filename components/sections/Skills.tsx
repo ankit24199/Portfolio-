@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { skills, skillCategories } from "@/lib/portfolio-data";
-import Tilt3DCard from "@/components/ui/Tilt3DCard";
+import Tilt3DCard from "@/components/layout/Tilt3DCard";
 
 function SkillCard({ s, i }: { s: typeof skills[0]; i: number }) {
   const barRef = useRef<HTMLDivElement>(null);
@@ -10,7 +10,6 @@ function SkillCard({ s, i }: { s: typeof skills[0]; i: number }) {
   useEffect(() => {
     const bar = barRef.current;
     if (!bar) return;
-    // Immediately set width if already in view; else observe
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -47,7 +46,7 @@ function SkillCard({ s, i }: { s: typeof skills[0]; i: number }) {
           onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
           onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
         >
-          {/* Header */}
+
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
               <div
@@ -63,7 +62,7 @@ function SkillCard({ s, i }: { s: typeof skills[0]; i: number }) {
                   fontSize: ".78rem",
                   fontWeight: 800,
                   color: s.color,
-                  fontFamily: "Space Grotesk, sans-serif",
+                  fontFamily: "'Inter', sans-serif",
                   flexShrink: 0,
                 }}
               >
@@ -79,7 +78,7 @@ function SkillCard({ s, i }: { s: typeof skills[0]; i: number }) {
             </span>
           </div>
 
-          {/* Progress bar */}
+
           <div ref={barRef} className="skill-track">
             <div
               className="skill-fill"
@@ -98,7 +97,6 @@ function SkillCard({ s, i }: { s: typeof skills[0]; i: number }) {
 
 export default function Skills() {
   const [active, setActive] = useState("All");
-  // Force remount on filter change
   const [filterKey, setFilterKey] = useState(0);
 
   const filtered = active === "All" ? skills : skills.filter((s) => s.category === active);
@@ -111,7 +109,7 @@ export default function Skills() {
   return (
     <section id="skills" style={{ background: "var(--bg)", color: "var(--ink)", padding: "6rem 0", position: "relative" }}>
       <div className="wrap" style={{ position: "relative", zIndex: 1 }}>
-        {/* Header */}
+
         <div style={{ textAlign: "center", marginBottom: "3rem" }}>
           <div className="section-label" style={{ display: "inline-flex", justifyContent: "center" }}>Technical Arsenal</div>
           <h2
@@ -124,7 +122,7 @@ export default function Skills() {
             A curated set of technologies I use to build modern, scalable web applications.
           </p>
 
-          {/* Filter tabs */}
+
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: ".5rem" }}>
             {skillCategories.map((cat) => (
               <button
@@ -150,7 +148,7 @@ export default function Skills() {
           </div>
         </div>
 
-        {/* Skills grid */}
+
         <div
           key={filterKey}
           style={{

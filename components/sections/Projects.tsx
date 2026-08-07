@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { projects } from "@/lib/portfolio-data";
 import { FiExternalLink, FiChevronDown, FiChevronUp, FiArrowUpRight } from "react-icons/fi";
-import MagneticButton from "@/components/ui/MagneticButton";
-import Tilt3DCard from "@/components/ui/Tilt3DCard";
+import MagneticButton from "@/components/layout/MagneticButton";
+import Tilt3DCard from "@/components/layout/Tilt3DCard";
 
 function ProjectCard({ p, i }: { p: typeof projects[0]; i: number }) {
   const [expanded, setExpanded] = useState(false);
@@ -26,7 +26,7 @@ function ProjectCard({ p, i }: { p: typeof projects[0]; i: number }) {
         onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--accent)")}
         onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
       >
-        {/* Project Image */}
+
         <div
           style={{
             order: isEven ? 0 : 1,
@@ -63,7 +63,7 @@ function ProjectCard({ p, i }: { p: typeof projects[0]; i: number }) {
           </div>
         </div>
 
-        {/* Content */}
+
         <div style={{ order: isEven ? 1 : 0, padding: "2.5rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <span className="tag tag-blue" style={{ marginBottom: "1rem", display: "inline-block", width: "fit-content" }}>{p.subtitle}</span>
           <h3 className="font-display" style={{ fontSize: "1.7rem", fontWeight: 800, color: "var(--ink)", marginBottom: ".6rem", lineHeight: 1.2 }}>{p.title}</h3>

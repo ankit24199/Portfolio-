@@ -1,6 +1,6 @@
 "use client";
 import { education } from "@/lib/portfolio-data";
-import Tilt3DCard from "@/components/ui/Tilt3DCard";
+import Tilt3DCard from "@/components/layout/Tilt3DCard";
 
 export default function Education() {
   return (

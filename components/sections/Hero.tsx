@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { personalInfo, socialLinks, stats } from "@/lib/portfolio-data";
 import { FiGithub, FiDownload, FiArrowRight, FiMail } from "react-icons/fi";
 import { FaLinkedinIn } from "react-icons/fa";
-import MagneticButton from "@/components/ui/MagneticButton";
+import MagneticButton from "@/components/layout/MagneticButton";
 
 const TITLES = [
   "MERN Stack Developer",
@@ -33,7 +33,7 @@ function TypeWriter({ texts }: { texts: string[] }) {
   }, [disp, phase, cur, texts]);
 
   return (
-    <span style={{ color: "var(--accent)", fontFamily: "Space Grotesk, sans-serif", fontWeight: 700, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+    <span style={{ color: "var(--accent)", fontWeight: 700, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
       {disp}
       <span className="animate-blink" style={{ display: "inline-block", marginLeft: 2 }}>|</span>
     </span>
@@ -56,7 +56,7 @@ export default function Hero() {
         paddingTop: "5rem",
       }}
     >
-      {/* Main content */}
+
       <div
         className="wrap hero-main-grid"
         style={{
@@ -68,7 +68,7 @@ export default function Hero() {
           paddingBottom: "3rem",
         }}
       >
-        {/* ─── LEFT: Text content ─── */}
+
         <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
           <div style={{ opacity: 0, animation: "fadeSlideUp .7s cubic-bezier(0.22,1,0.36,1) .1s both" }}>
             <p style={{ color: "var(--ink2)", fontSize: "1.1rem", fontWeight: 500, fontStyle: "italic" }}>
@@ -118,7 +118,7 @@ export default function Hero() {
             engages, and delivers results.
           </p>
 
-          {/* CTA */}
+    
           <div
             className="hero-cta"
             style={{
@@ -146,7 +146,7 @@ export default function Hero() {
             </MagneticButton>
           </div>
 
-          {/* Socials */}
+    
           <div
             style={{
               display: "flex",
@@ -185,7 +185,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* ─── RIGHT: Photo + Stats ─── */}
+
         <div
           style={{
             display: "flex",
@@ -196,7 +196,7 @@ export default function Hero() {
             animation: "slideInRight .85s cubic-bezier(0.22,1,0.36,1) .2s both",
           }}
         >
-          {/* Photo */}
+
           <div
             style={{
               width: "clamp(260px, 28vw, 380px)",
@@ -220,7 +220,7 @@ export default function Hero() {
             />
           </div>
 
-          {/* Stats row (like the reference) */}
+
           <div style={{ display: "flex", gap: "2rem", textAlign: "center", flexWrap: "wrap", justifyContent: "center" }}>
             {stats.map((s, i) => (
               <div
@@ -242,7 +242,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ─── Bottom feature strip (like Dominic reference) ─── */}
+
       <div
         style={{
           borderTop: "1px solid var(--border)",

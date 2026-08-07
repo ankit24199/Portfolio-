@@ -3,8 +3,8 @@ import { useState } from "react";
 import { personalInfo, socialLinks } from "@/lib/portfolio-data";
 import { FiMail, FiPhone, FiMapPin, FiGithub, FiSend, FiCheckCircle, FiArrowUpRight } from "react-icons/fi";
 import { FaLinkedinIn } from "react-icons/fa";
-import MagneticButton from "@/components/ui/MagneticButton";
-import Tilt3DCard from "@/components/ui/Tilt3DCard";
+import MagneticButton from "@/components/layout/MagneticButton";
+import Tilt3DCard from "@/components/layout/Tilt3DCard";
 
 const contactItems = [
   { icon: FiMail, label: "Email", value: personalInfo.email, href: socialLinks.email },
@@ -66,7 +66,7 @@ export default function Contact() {
         </div>
 
         <div className="contact-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "start", marginBottom: 0 }}>
-          {/* Left — contact cards */}
+
           <div className="reveal-left" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             <div style={{ background: "var(--card-bg)", borderRadius: "1rem", padding: "1.5rem", marginBottom: ".5rem", border: "1px solid var(--border)" }}>
               <p style={{ color: "var(--ink2)", lineHeight: 1.8, fontSize: ".9rem" }}>
@@ -102,7 +102,7 @@ export default function Contact() {
             })}
           </div>
 
-          {/* Right — form */}
+
           <div className="reveal-right">
             <Tilt3DCard maxTilt={4} scale={1.01}>
               <div style={{ background: "var(--card-bg)", borderRadius: "1.25rem", padding: "2rem", border: "1px solid var(--border)" }}>
@@ -152,10 +152,10 @@ export default function Contact() {
         </div>
       </div>
 
-      {/* Footer */}
+
       <div style={{ background: "var(--bg2)", marginTop: "5rem", padding: "2rem 0", borderTop: "1px solid var(--border)" }}>
         <div className="wrap" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
-          <p style={{ color: "var(--ink2)", fontSize: ".88rem", fontFamily: "Space Grotesk, sans-serif", fontWeight: 600 }}>
+          <p style={{ color: "var(--ink2)", fontSize: ".88rem", fontWeight: 600 }}>
             Designed &amp; Built by <span style={{ color: "var(--accent)", fontWeight: 700 }}>Ankit Yadav</span>
           </p>
           <p style={{ color: "var(--ink3)", fontSize: ".8rem" }}>© {new Date().getFullYear()} — All rights reserved</p>

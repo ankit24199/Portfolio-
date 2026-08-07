@@ -11,7 +11,6 @@ export default function Navbar() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Read saved preference, default to light
     const saved = localStorage.getItem("theme") as "light" | "dark" | null;
     const applied = saved ?? "light";
     setTheme(applied);
@@ -46,7 +45,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Scroll progress */}
       <div className="progress-bar" style={{ width: `${progress}%` }} />
 
       <header
@@ -63,7 +61,7 @@ export default function Navbar() {
       >
         <div className="wrap" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
 
-          {/* Logo */}
+
           <button
             onClick={() => go("#home")}
             style={{ border: "none", background: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: ".75rem", flexShrink: 0 }}
@@ -79,7 +77,6 @@ export default function Navbar() {
             </div>
           </button>
 
-          {/* Desktop nav */}
           <nav style={{ display: "flex", alignItems: "center", gap: ".1rem" }} className="hidden-mobile">
             {navLinks.map((l) => (
               <button
@@ -92,9 +89,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Right: theme toggle */}
           <div style={{ display: "flex", alignItems: "center", gap: ".5rem", flexShrink: 0 }}>
-            {/* Toggle button — simple, clean */}
             <button
               onClick={toggleTheme}
               aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
@@ -114,7 +109,6 @@ export default function Navbar() {
               {theme === "light" ? <FiMoon size={17} /> : <FiSun size={17} />}
             </button>
 
-            {/* Hamburger */}
             <button
               onClick={() => setOpen(!open)}
               className="show-mobile"
@@ -132,7 +126,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile drawer */}
         <div style={{ maxHeight: open ? "600px" : "0", overflow: "hidden", transition: "max-height .35s ease", borderTop: open ? "1px solid var(--border)" : "none" }}>
           <nav className="wrap" style={{ display: "flex", flexDirection: "column", gap: ".25rem", padding: "1rem 2rem" }}>
             {navLinks.map((l) => (
@@ -151,7 +144,6 @@ export default function Navbar() {
                 {l.label}
               </button>
             ))}
-            {/* Mobile theme toggle */}
             <button
               onClick={toggleTheme}
               style={{

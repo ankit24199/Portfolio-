@@ -1,8 +1,8 @@
 "use client";
 import { certifications } from "@/lib/portfolio-data";
 import { FiExternalLink, FiCheckCircle } from "react-icons/fi";
-import MagneticButton from "@/components/ui/MagneticButton";
-import Tilt3DCard from "@/components/ui/Tilt3DCard";
+import MagneticButton from "@/components/layout/MagneticButton";
+import Tilt3DCard from "@/components/layout/Tilt3DCard";
 
 export default function Certifications() {
   return (
@@ -19,9 +19,9 @@ export default function Certifications() {
           {certifications.map((cert, i) => (
             <Tilt3DCard key={cert.title} maxTilt={8} scale={1.02}>
               <div className={`card reveal delay-${i + 1}`} style={{ padding: 0, overflow: "hidden", height: "100%" }}>
-                {/* Header band */}
+
                 <div style={{ height: "4rem", background: `linear-gradient(135deg, ${cert.color}25, var(--glow))`, display: "flex", alignItems: "center", padding: "0 1.5rem", borderBottom: "1px solid var(--border)" }}>
-                  <div style={{ width: "3rem", height: "3rem", borderRadius: ".875rem", background: cert.color, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Space Grotesk, sans-serif", fontWeight: 800, fontSize: "1.4rem", color: "#fff" }}>
+                  <div style={{ width: "3rem", height: "3rem", borderRadius: ".875rem", background: cert.color, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "1.4rem", color: "#fff" }}>
                     {cert.letter}
                   </div>
                 </div>

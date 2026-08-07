@@ -1,6 +1,6 @@
 "use client";
 import { experience } from "@/lib/portfolio-data";
-import Tilt3DCard from "@/components/ui/Tilt3DCard";
+import Tilt3DCard from "@/components/layout/Tilt3DCard";
 
 export default function Experience() {
   return (
@@ -15,7 +15,7 @@ export default function Experience() {
 
         {experience.map((job) => (
           <div key={job.company} className="reveal exp-grid" style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "3rem", alignItems: "start" }}>
-            {/* Left sticky info */}
+
             <div style={{ position: "sticky", top: "6.5rem" }}>
               <span className="tag tag-blue" style={{ marginBottom: "1rem", display: "inline-block" }}>{job.type}</span>
               <h3 className="font-display" style={{ fontSize: "1.6rem", fontWeight: 800, color: "var(--ink)", lineHeight: 1.2, marginBottom: ".4rem" }}>{job.role}</h3>
@@ -38,7 +38,7 @@ export default function Experience() {
               </div>
             </div>
 
-            {/* Right 3D cards */}
+
             <div className="exp-cards-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
               {job.responsibilities.map((r, ri) => (
                 <Tilt3DCard key={r.title} maxTilt={8} scale={1.02}>
