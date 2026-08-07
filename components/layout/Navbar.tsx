@@ -66,7 +66,7 @@ export default function Navbar() {
           {/* Logo */}
           <button
             onClick={() => go("#home")}
-            style={{ border: "none", background: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: ".5rem", flexShrink: 0 }}
+            style={{ border: "none", background: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: ".75rem", flexShrink: 0 }}
           >
             <span className="font-display" style={{ color: "var(--accent)", fontWeight: 800, fontSize: "1.1rem" }}>&lt;/&gt;</span>
             <div>
@@ -118,15 +118,16 @@ export default function Navbar() {
             <button
               onClick={() => setOpen(!open)}
               className="show-mobile"
+              aria-label={open ? "Close menu" : "Open menu"}
               style={{
-                width: 40, height: 40, borderRadius: ".65rem",
+                width: 44, height: 44, borderRadius: ".65rem",
                 border: "1.5px solid var(--border)",
                 background: "var(--card-bg)",
                 cursor: "pointer", display: "none", alignItems: "center", justifyContent: "center",
                 color: "var(--ink)",
               }}
             >
-              {open ? <FiX size={18} /> : <FiMenu size={18} />}
+              {open ? <FiX size={16} /> : <FiMenu size={16} />}
             </button>
           </div>
         </div>

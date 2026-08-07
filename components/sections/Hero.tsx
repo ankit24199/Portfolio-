@@ -33,7 +33,7 @@ function TypeWriter({ texts }: { texts: string[] }) {
   }, [disp, phase, cur, texts]);
 
   return (
-    <span style={{ color: "var(--accent)", fontFamily: "Space Grotesk, sans-serif", fontWeight: 700 }}>
+    <span style={{ color: "var(--accent)", fontFamily: "Space Grotesk, sans-serif", fontWeight: 700, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
       {disp}
       <span className="animate-blink" style={{ display: "inline-block", marginLeft: 2 }}>|</span>
     </span>
@@ -96,7 +96,7 @@ export default function Hero() {
           <div
             style={{
               fontSize: "clamp(1rem, 2vw, 1.3rem)",
-              minHeight: "2rem",
+              minHeight: "3.5rem",
               opacity: 0,
               animation: "fadeSlideUp .7s cubic-bezier(0.22,1,0.36,1) .3s both",
             }}
@@ -120,26 +120,27 @@ export default function Hero() {
 
           {/* CTA */}
           <div
+            className="hero-cta"
             style={{
               display: "flex",
               flexWrap: "wrap",
-              gap: ".75rem",
+              gap: "1rem",
               alignItems: "center",
               opacity: 0,
               animation: "fadeSlideUp .7s cubic-bezier(0.22,1,0.36,1) .5s both",
             }}
           >
-            <MagneticButton>
+            <MagneticButton className="hero-btn-wrapper">
               <button
                 className="btn btn-dark"
                 onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-                style={{ borderRadius: "9999px" }}
+                style={{ borderRadius: "9999px", width: "100%", justifyContent: "center" }}
               >
                 Contact Me <FiArrowRight size={16} />
               </button>
             </MagneticButton>
-            <MagneticButton>
-              <a className="btn btn-ghost" href={personalInfo.resumeUrl} download style={{ borderRadius: "9999px" }}>
+            <MagneticButton className="hero-btn-wrapper">
+              <a className="btn btn-ghost" href={personalInfo.resumeUrl} download style={{ borderRadius: "9999px", width: "100%", justifyContent: "center" }}>
                 <FiDownload size={16} /> Resume
               </a>
             </MagneticButton>
@@ -199,7 +200,7 @@ export default function Hero() {
           <div
             style={{
               width: "clamp(260px, 28vw, 380px)",
-              height: "clamp(320px, 36vw, 480px)",
+              height: "clamp(240px, 40vw, 480px)",
               borderRadius: "40% 40% 42% 42% / 18% 18% 35% 35%",
               overflow: "hidden",
               background: "var(--card-bg2)",
@@ -220,7 +221,7 @@ export default function Hero() {
           </div>
 
           {/* Stats row (like the reference) */}
-          <div style={{ display: "flex", gap: "2.5rem", textAlign: "center" }}>
+          <div style={{ display: "flex", gap: "2rem", textAlign: "center", flexWrap: "wrap", justifyContent: "center" }}>
             {stats.map((s, i) => (
               <div
                 key={s.label}
@@ -285,6 +286,10 @@ export default function Hero() {
         }
         @media(max-width: 640px) {
           .hero-features { grid-template-columns: 1fr !important; }
+        }
+        @media(max-width: 480px) {
+          .hero-cta { flex-direction: column; width: 100%; gap: 0.75rem !important; }
+          .hero-btn-wrapper { width: 100%; }
         }
       `}</style>
     </section>

@@ -60,7 +60,7 @@ export default function Contact() {
       <div className="wrap">
         <div className="reveal" style={{ marginBottom: "3.5rem" }}>
           <div className="section-label">Get In Touch</div>
-          <h2 className="font-display" style={{ fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 800, color: "var(--ink)", lineHeight: 1.15 }}>
+          <h2 className="font-display" style={{ fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 800, color: "var(--ink)", lineHeight: 1.3, wordBreak: "break-word" }}>
             Let&apos;s Work <span className="gradient-text">Together</span>
           </h2>
         </div>
@@ -91,9 +91,11 @@ export default function Contact() {
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ color: "var(--ink3)", fontSize: ".7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: ".1rem" }}>{m.label}</p>
-                      <p style={{ color: "var(--ink)", fontSize: ".88rem", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.value}</p>
+                      <p style={{ color: "var(--ink)", fontSize: ".88rem", fontWeight: 600, wordBreak: "break-all" }}>{m.value}</p>
                     </div>
-                    <FiArrowUpRight size={15} style={{ color: "var(--accent)", flexShrink: 0 }} />
+                    <div style={{ padding: ".25rem", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <FiArrowUpRight size={15} style={{ color: "var(--accent)" }} />
+                    </div>
                   </a>
                 </Tilt3DCard>
               );
@@ -120,8 +122,8 @@ export default function Contact() {
                     </MagneticButton>
                   </div>
                 ) : (
-                  <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: ".875rem" }}>
-                    <div className="contact-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: ".875rem" }}>
+                  <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    <div className="contact-form-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
                       {[{ name: "name", label: "Name", type: "text", placeholder: "Your full name" }, { name: "email", label: "Email", type: "email", placeholder: "your@email.com" }].map((f) => (
                         <div key={f.name}>
                           <label style={{ display: "block", color: "var(--ink3)", fontSize: ".7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: ".4rem" }}>{f.label}</label>

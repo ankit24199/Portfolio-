@@ -20,7 +20,7 @@ export default function Certifications() {
             <Tilt3DCard key={cert.title} maxTilt={8} scale={1.02}>
               <div className={`card reveal delay-${i + 1}`} style={{ padding: 0, overflow: "hidden", height: "100%" }}>
                 {/* Header band */}
-                <div style={{ height: "5rem", background: `linear-gradient(135deg, ${cert.color}25, var(--glow))`, display: "flex", alignItems: "center", padding: "0 1.5rem", borderBottom: "1px solid var(--border)" }}>
+                <div style={{ height: "4rem", background: `linear-gradient(135deg, ${cert.color}25, var(--glow))`, display: "flex", alignItems: "center", padding: "0 1.5rem", borderBottom: "1px solid var(--border)" }}>
                   <div style={{ width: "3rem", height: "3rem", borderRadius: ".875rem", background: cert.color, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Space Grotesk, sans-serif", fontWeight: 800, fontSize: "1.4rem", color: "#fff" }}>
                     {cert.letter}
                   </div>
@@ -29,7 +29,7 @@ export default function Certifications() {
                   <h3 className="font-display" style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--ink)", marginBottom: ".2rem" }}>{cert.title}</h3>
                   <p style={{ color: cert.color, fontWeight: 700, fontSize: ".85rem", marginBottom: ".75rem" }}>{cert.issuer}</p>
                   <p style={{ color: "var(--ink2)", fontSize: ".875rem", lineHeight: 1.7, marginBottom: "1.25rem" }}>{cert.description}</p>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid var(--border)", paddingTop: "1rem" }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem", borderTop: "1px solid var(--border)", paddingTop: "1rem" }}>
                     <span style={{ color: "var(--ink3)", fontSize: ".8rem", fontFamily: "monospace" }}>📅 {cert.date}</span>
                     <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
                       <span style={{ display: "flex", alignItems: "center", gap: ".3rem", color: "#22c55e", fontSize: ".75rem", fontWeight: 700 }}>
